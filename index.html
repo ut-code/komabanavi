@@ -38,7 +38,7 @@
     // 例：図書館にマーカー（画像座標で指定）
     L.marker([900, 1900]).addTo(map).bindPopup('一号館');
     // 透明のポリゴンを置いて、ポップアップにHTMLを埋め込む
-    L.polygon([[1024,2687],[1019,2904],[858,2904],[854,2692]],{
+    const library = L.polygon([[1024,2687],[1019,2904],[858,2904],[854,2692]],{
       color: 'transparent', //枠線の色を透明に
       fillOpacity: 0, //塗りの透明度を0に
     }).addTo(map)
@@ -97,6 +97,21 @@
     }).addTo(map);
 
     
+    const bldg7 = L.polygon([[1461,1557],[1342,1558],[1341,1733],[1461,1732]],{
+      color: 'transparent', //枠線の色を透明に
+      fillOpacity: 0, //塗りの透明度を0に
+    }).addTo(map)
+    .bindPopup()
+    const bldg5 = L.polygon([[1612,1352],[1506,1353],[1505,1625],[1613,1624]],{
+      color: 'transparent', //枠線の色を透明に
+      fillOpacity: 0, //塗りの透明度を0に
+    }).addTo(map)
+    .bindPopup()
+    const bldg17 = L.polygon([[1589,1136],[1487,1136],[1486,1308],[1588,1308]],{
+      color: 'transparent', //枠線の色を透明に
+      fillOpacity: 0, //塗りの透明度を0に
+    }).addTo(map)
+    .bindPopup()
   </script>
 </body>
 </html>
