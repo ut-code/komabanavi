@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Map (Image)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // 画像のピクセルサイズ（例：キャンパス図 2000x1400）
+    const imgWidth = 4000, imgHeight = 2800;
+
+    // CRS.Simple（独自座標）で地図を作る
+    const map = L.map('map', { crs: L.CRS.Simple, minZoom: -2 });
+
+    // 画像を貼るための座標領域（左上[0,0]〜右下[高さ,幅]）
+    const bounds = [[0, 0], [imgHeight, imgWidth]];
+
+    // 画像オーバーレイ
+    L.imageOverlay('assets/komabamap.svg', bounds).addTo(map);
+    map.fitBounds(bounds);
+
+    // クリックした位置の座標（マーカー配置の補助）
+    map.on('click', (e) => {
+      const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
+      console.log('clicked:', lat, lng);
+      L.marker([lat, lng]).addTo(map)
+        .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
+    });
+
+    // 例：図書館にマーカー（画像座標で指定）
+    L.marker([900, 1900]).addTo(map).bindPopup('一号館');
+    // マーカーを置いて、ポップアップにHTMLを埋め込む
+    L.polygon([[1024,2687],[1019,2904],[858,2904],[854,2692]],{
+      color: 'transparent',
+      fillOpacity: 0,
+    }).addTo(map)
+    .bindPopup(`
+    <div style="text-align:center;">
+      <p><b>図書館</b></p>
+      <a href="assets/?" target="_blank">
+        <img src="assets/?" alt="図書館構造図" width="120" />
+      </a>
+    </div>
+    `)
+
+  </script>
+</body>
+</html>
