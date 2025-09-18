@@ -37,16 +37,16 @@
 
     // 例：図書館にマーカー（画像座標で指定）
     L.marker([900, 1900]).addTo(map).bindPopup('一号館');
-    // マーカーを置いて、ポップアップにHTMLを埋め込む
+    // 透明のポリゴンを置いて、ポップアップにHTMLを埋め込む
     L.polygon([[1024,2687],[1019,2904],[858,2904],[854,2692]],{
-      color: 'transparent',
-      fillOpacity: 0,
+      color: 'transparent', //枠線の色を透明に
+      fillOpacity: 0, //塗りの透明度を0に
     }).addTo(map)
     .bindPopup(`
     <div style="text-align:center;">
       <p><b>図書館</b></p>
-      <a href="assets/?" target="_blank">
-        <img src="assets/?" alt="図書館構造図" width="120" />
+      <a href="path" target="_blank">
+        <img src="path" alt="図書館構造図" width="120" />
       </a>
     </div>
     `)
