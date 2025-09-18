@@ -24,7 +24,8 @@
     const bounds = [[0, 0], [imgHeight, imgWidth]];
 
     // 画像オーバーレイ
-    L.imageOverlay('https://github.com/ut-code/komabanavi/blob/ito/komabamap.png', bounds).addTo(map);
+    L.imageOverlay('https://raw.githubusercontent.com/ut-code/komabanavi/ito/komabamap.png
+    ', bounds).addTo(map);
     map.fitBounds(bounds);
 
     // クリックした位置の座標（マーカー配置の補助）
@@ -54,6 +55,7 @@
   </script>
 </body>
 </html>
+
 
 
 
