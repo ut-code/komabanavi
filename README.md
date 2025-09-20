@@ -2,7 +2,7 @@
 
 東大キャンパスマップ。
 
-## 開発環境について
+## 環境構築
 
 ```sh
 git clone git@github.com:ut-code/komabanavi.git
@@ -10,25 +10,25 @@ cd komabanavi
 npm install
 ```
 
-- `npm run format` フォーマット
-- `npm run dev` http://127.0.0.1:8080 でプレビュー
+## 開発環境
+- `npm run format` でフォーマット
+- `npm run dev` を実行してから http://127.0.0.1:8080 を開いてプレビュー
 
-3. 開発ルールを決める
+### ブランチ戦略
 
-ブランチ戦略
+- main（または master）: 安定版
 
-main（または master）: 安定版
+- develop : 開発用
 
-develop : 開発用
+- 各自の作業用ブランチ: feature/◯◯ や fix/◯◯
 
-各自の作業用ブランチ: feature/◯◯ や fix/◯◯
+### コミットメッセージのルール
 
-コミットメッセージのルール
+- 例: feat: ログイン機能を追加, fix: ボタンのバグ修正
 
-例: feat: ログイン機能を追加, fix: ボタンのバグ修正
+### コードレビューのやり方
 
-コードレビューのやり方
+- プルリクエストを出して、少なくとも1人レビューしてからマージ
 
-プルリクエストを出して、少なくとも1人レビューしてからマージ
+- 直接 main に push はしない（できなくしてある）
 
-直接 main に push はしない
