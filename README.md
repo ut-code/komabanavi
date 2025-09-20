@@ -1,6 +1,15 @@
-# Komabanavi
+# Komaba-navi
 
 東大キャンパスマップ。
+
+## 開発環境について
+```sh
+git clone git@github.com:ut-code/komabanavi.git 
+cd komabanavi
+npm install
+```
+- `npm run format` フォーマット
+- `npm run dev` http://127.0.0.1:8080 でプレビュー
 
 3. 開発ルールを決める
 
