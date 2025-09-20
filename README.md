@@ -11,8 +11,16 @@ npm install
 ```
 
 ## 開発環境
-- `npm run format` でフォーマット
-- `npm run dev` を実行してから http://127.0.0.1:8080 を開いてプレビュー
+
+```sh
+npm run dev # http://localhost:8080 でプレビュー
+
+# フォーマット
+npm run format
+
+# ビルド
+npm run build
+```
 
 ### ブランチ戦略
 
