@@ -20,7 +20,7 @@ npm install
 
 - develop : 開発用
 
-- 各自の作業用ブランチ: feature/◯◯ や fix/◯◯
+- 各機能の作業用ブランチ: feature/◯◯ や fix/◯◯
 
 ### コミットメッセージのルール
 
