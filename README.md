@@ -1,23 +1,34 @@
-# Komabanavi
+# Komaba-navi
 
 東大キャンパスマップ。
 
-3. 開発ルールを決める
+## 環境構築
 
-ブランチ戦略
+```sh
+git clone git@github.com:ut-code/komabanavi.git
+cd komabanavi
+npm install
+```
 
-main（または master）: 安定版
+## 開発環境
+- `npm run format` でフォーマット
+- `npm run dev` を実行してから http://127.0.0.1:8080 を開いてプレビュー
 
-develop : 開発用
+### ブランチ戦略
 
-各自の作業用ブランチ: feature/◯◯ や fix/◯◯
+- main（または master）: 安定版
 
-コミットメッセージのルール
+- develop : 開発用
 
-例: feat: ログイン機能を追加, fix: ボタンのバグ修正
+- 各自の作業用ブランチ: feature/◯◯ や fix/◯◯
 
-コードレビューのやり方
+### コミットメッセージのルール
 
-プルリクエストを出して、少なくとも1人レビューしてからマージ
+- 例: feat: ログイン機能を追加, fix: ボタンのバグ修正
 
-直接 main に push はしない
+### コードレビューのやり方
+
+- プルリクエストを出して、少なくとも1人レビューしてからマージ
+
+- 直接 main に push はしない（できなくしてある）
+
