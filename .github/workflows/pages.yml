@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BASE_PATH: "/komabanavi"
+  BASE_PATH: "/komabanavi/"
 
 jobs:
   deploy:
