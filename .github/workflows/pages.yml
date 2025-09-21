@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - meta/deploy-gh-pages # temporary
   workflow_dispatch:
 
 permissions:
