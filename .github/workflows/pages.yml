@@ -17,6 +17,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  BASE_PATH: "/komabanavi"
+
 jobs:
   deploy:
     name: Deploy
