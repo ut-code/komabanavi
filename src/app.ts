@@ -31,17 +31,34 @@ const hiddenWSMarkers: L.Marker[] = [
   L.marker([1560,1560]),
   L.marker([1026,2812]),
 ];
-let markersVisible = false;
+let wsMarkersVisible = false;
 const wsbtn = document.getElementById("wsMarker")!;
 wsbtn.addEventListener("click", () => {
-  if (markersVisible) {
+  if (wsMarkersVisible) {
     // 非表示にする
     hiddenWSMarkers.forEach(m => map.removeLayer(m));
   } else {
     // 表示する
     hiddenWSMarkers.forEach(m => m.addTo(map));
   }
-  markersVisible = !markersVisible;
+  wsMarkersVisible = !wsMarkersVisible;
+});
+// 自動販売機のボタンの機能実装
+const hiddenVMMarkers: L.Marker[] = [
+  L.marker([1060,1496]),
+  L.marker([1088,1648]),
+];
+let vmMarkersVisible = false;
+const vmbtn = document.getElementById("vmMarker")!;
+vmbtn.addEventListener("click", () => {
+  if (vmMarkersVisible) {
+    // 非表示にする
+    hiddenVMMarkers.forEach(m => map.removeLayer(m));
+  } else {
+    // 表示する
+    hiddenVMMarkers.forEach(m => m.addTo(map));
+  }
+  vmMarkersVisible = !vmMarkersVisible;
 });
 // 例：図書館にマーカー（画像座標で指定）
 L.marker([900, 1900]).addTo(map).bindPopup("一号館");
