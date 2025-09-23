@@ -31,3 +31,31 @@ body,
 .wsButton:hover {
   background: #2980b9;
 }
+
+.vmButton {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  z-index: 1000;
+  background: #ffa500;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.vmButton img {
+  width: 20px;
+  height: 20px;
+}
+
+.vmButton:hover {
+  background: #ffa500;
+}
