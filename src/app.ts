@@ -18,6 +18,36 @@ const bounds: LatLngBoundsExpression = [
 L.imageOverlay(im.Komabamap, bounds).addTo(map);
 map.fitBounds(bounds);
 
+// 位置情報変換
+const refPoints = {
+  point1: { lat: 35.658377, lng: 139.688137, x: 615, y: 3481},
+  point2: { lat: 35.662947, lng: 139.683649, x: 2506, y: 934},
+};
+
+function convertLatLngToImageXY(lat: number, lng: number): L.LatLngExpression {
+    const latRatio = (refPoints.point1.x - refPoints.point2.x) / (refPoints.point1.lat - refPoints.point2.lat);
+    const lngRatio = (refPoints.point1.y - refPoints.point2.y) / (refPoints.point1.lng - refPoints.point2.lng);
+
+    const x = (lat - refPoints.point1.lat)*latRatio + refPoints.point1.x;
+    const y = (lng - refPoints.point1.lng)*lngRatio + refPoints.point1.y;
+
+    return [x, y];
+}
+
+// 位置情報取得
+navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+    const userLat: number = position.coords.latitude;
+    const userLng: number = position.coords.longitude;
+
+    // 緯度経度を画像座標に変換
+    const imageXY = convertLatLngToImageXY(userLat, userLng);
+
+    // マーカーを設置
+    L.marker(imageXY).addTo(map)
+        .bindPopup("現在地")
+        .openPopup();
+});
+
 // クリックした位置の座標（マーカー配置の補助）
 map.on("click", (e) => {
   const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
