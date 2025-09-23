@@ -26,7 +26,23 @@ map.on("click", (e) => {
     .addTo(map)
     .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
 });
-
+// ウォーターサーバーのボタンの機能実装
+const hiddenWSMarkers: L.Marker[] = [
+  L.marker([1560,1560]),
+  L.marker([1026,2812]),
+];
+let markersVisible = false;
+const wsbtn = document.getElementById("wsMarker")!;
+wsbtn.addEventListener("click", () => {
+  if (markersVisible) {
+    // 非表示にする
+    hiddenWSMarkers.forEach(m => map.removeLayer(m));
+  } else {
+    // 表示する
+    hiddenWSMarkers.forEach(m => m.addTo(map));
+  }
+  markersVisible = !markersVisible;
+});
 // 例：図書館にマーカー（画像座標で指定）
 L.marker([900, 1900]).addTo(map).bindPopup("一号館");
 // 透明のポリゴンを置いて、ポップアップにHTMLを埋め込む
