@@ -227,7 +227,7 @@ const Bldg8 = L.polygon(
 ).addTo(map).bindPopup(`
     <div style="text-align:center;">
       <p><b>8号館</b></p>
-      <a href="path" target="_blank">
+      <a href="${im.Building8}" target="_blank">
         階層図
       </a>
     </div>
@@ -354,6 +354,50 @@ const Bldg14 = L.polygon(
       </a>
     </div>
     `);
+  
+const Bldg15 = L.polygon(
+  [
+    [1474, 719],
+    [1474, 913],
+    [1344, 913],
+    [1344, 719],
+  ],
+  {
+    color: "transparent",
+    fillOpacity: 0,
+  },
+).addTo(map).bindPopup(`
+    <div style="text-align:center;">
+      <p><b>15号館</b></p>
+      <a href="${im.Building15}" target="_blank">
+        階層図
+      </a>
+    </div>
+    `);
+
+const Bldg16 = L.polygon(
+  [
+    [1475, 913],
+    [1540, 913],
+    [1540, 1069],
+    [1675, 1069],
+    [1675, 749],
+    [1540, 749],
+    [1540,801],
+    [1475,801],
+  ],
+  {
+    color: "transparent",
+    fillOpacity: 0,
+  },
+).addTo(map).bindPopup(`
+    <div style="text-align:center;">
+      <p><b>16号館</b></p>
+      <a href="${im.Building16}" target="_blank">
+        階層図
+      </a>
+    </div>
+    `);
 
 const bldg17 = L.polygon(
   [
@@ -391,7 +435,7 @@ const Bldg18 = L.polygon(
 ).addTo(map).bindPopup(`
     <div style="text-align:center;">
       <p><b>18号館</b></p>
-      <a href="path" target="_blank">
+      <a href="${im.Building18}" target="_blank">
         階層図
       </a>
     </div>
@@ -502,3 +546,46 @@ const InfoEduBuild = L.polygon(
       </a>
     </div>
     `);
+
+const AdministrationOffice = L.polygon(
+  [
+    [723, 2071],
+    [723, 2304],
+    [647, 2310],
+    [647, 2418],
+    [565, 2418],
+    [565, 2071],
+  ],
+  {
+    color: "transparent",
+    fillOpacity: 0,
+  },
+).addTo(map).bindPopup(`
+    <div style="text-align:center;">
+      <p><b>アドミニストレーション棟</b></p>
+      <a href="${im.AdministrationOffice}" target="_blank">
+        階層図
+      </a>
+    </div>
+    `);
+
+const KCPNorthBldg = L.polygon(
+  [
+    [1395, 2593],
+    [1395, 2979],
+    [1305, 2979],
+    [1305, 2593],
+  ],
+  {
+    color: "transparent",
+    fillOpacity: 0,
+  },
+).addTo(map).bindPopup(`
+    <div style="text-align:center;">
+      <p><b>コミプラ北館</b></p>
+      <a href="${im.KCPNorthBldg}" target="_blank">
+        階層図
+      </a>
+    </div>
+    `);
+
