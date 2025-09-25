@@ -180,7 +180,7 @@ const Bldg8 = L.polygon(
 ).addTo(map).bindPopup(`
     <div style="text-align:center;">
       <p><b>8号館</b></p>
-      <a href="path" target="_blank">
+      <a href="${im.Building8}" target="_blank">
         階層図
       </a>
     </div>
@@ -344,7 +344,7 @@ const Bldg18 = L.polygon(
 ).addTo(map).bindPopup(`
     <div style="text-align:center;">
       <p><b>18号館</b></p>
-      <a href="path" target="_blank">
+      <a href="${im.Building18}" target="_blank">
         階層図
       </a>
     </div>
