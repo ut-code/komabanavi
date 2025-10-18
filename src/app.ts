@@ -20,32 +20,34 @@ map.fitBounds(bounds);
 
 // 位置情報変換
 const refPoints = {
-  point1: { lat: 35.658377, lng: 139.688137, x: 615, y: 3481},
-  point2: { lat: 35.662947, lng: 139.683649, x: 2506, y: 934},
+  point1: { lat: 35.658377, lng: 139.688137, x: 615, y: 3481 },
+  point2: { lat: 35.662947, lng: 139.683649, x: 2506, y: 934 },
 };
 
 function convertLatLngToImageXY(lat: number, lng: number): L.LatLngExpression {
-    const latRatio = (refPoints.point1.x - refPoints.point2.x) / (refPoints.point1.lat - refPoints.point2.lat);
-    const lngRatio = (refPoints.point1.y - refPoints.point2.y) / (refPoints.point1.lng - refPoints.point2.lng);
+  const latRatio =
+    (refPoints.point1.x - refPoints.point2.x) /
+    (refPoints.point1.lat - refPoints.point2.lat);
+  const lngRatio =
+    (refPoints.point1.y - refPoints.point2.y) /
+    (refPoints.point1.lng - refPoints.point2.lng);
 
-    const x = (lat - refPoints.point1.lat)*latRatio + refPoints.point1.x;
-    const y = (lng - refPoints.point1.lng)*lngRatio + refPoints.point1.y;
+  const x = (lat - refPoints.point1.lat) * latRatio + refPoints.point1.x;
+  const y = (lng - refPoints.point1.lng) * lngRatio + refPoints.point1.y;
 
-    return [x, y];
+  return [x, y];
 }
 
 // 位置情報取得
 navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-    const userLat: number = position.coords.latitude;
-    const userLng: number = position.coords.longitude;
+  const userLat: number = position.coords.latitude;
+  const userLng: number = position.coords.longitude;
 
-    // 緯度経度を画像座標に変換
-    const imageXY = convertLatLngToImageXY(userLat, userLng);
+  // 緯度経度を画像座標に変換
+  const imageXY = convertLatLngToImageXY(userLat, userLng);
 
-    // マーカーを設置
-    L.marker(imageXY).addTo(map)
-        .bindPopup("現在地")
-        .openPopup();
+  // マーカーを設置
+  L.marker(imageXY).addTo(map).bindPopup("現在地").openPopup();
 });
 
 // クリックした位置の座標（マーカー配置の補助）
@@ -58,35 +60,35 @@ map.on("click", (e) => {
 });
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
-  L.marker([1560,1560]),
-  L.marker([1026,2812]),
+  L.marker([1560, 1560]),
+  L.marker([1026, 2812]),
 ];
 let wsMarkersVisible = false;
 const wsbtn = document.getElementById("wsMarker")!;
 wsbtn.addEventListener("click", () => {
   if (wsMarkersVisible) {
     // 非表示にする
-    hiddenWSMarkers.forEach(m => map.removeLayer(m));
+    hiddenWSMarkers.forEach((m) => map.removeLayer(m));
   } else {
     // 表示する
-    hiddenWSMarkers.forEach(m => m.addTo(map));
+    hiddenWSMarkers.forEach((m) => m.addTo(map));
   }
   wsMarkersVisible = !wsMarkersVisible;
 });
 // 自動販売機のボタンの機能実装
 const hiddenVMMarkers: L.Marker[] = [
-  L.marker([1060,1496]),
-  L.marker([1088,1648]),
+  L.marker([1060, 1496]),
+  L.marker([1088, 1648]),
 ];
 let vmMarkersVisible = false;
 const vmbtn = document.getElementById("vmMarker")!;
 vmbtn.addEventListener("click", () => {
   if (vmMarkersVisible) {
     // 非表示にする
-    hiddenVMMarkers.forEach(m => map.removeLayer(m));
+    hiddenVMMarkers.forEach((m) => map.removeLayer(m));
   } else {
     // 表示する
-    hiddenVMMarkers.forEach(m => m.addTo(map));
+    hiddenVMMarkers.forEach((m) => m.addTo(map));
   }
   vmMarkersVisible = !vmMarkersVisible;
 });
@@ -354,7 +356,7 @@ const Bldg14 = L.polygon(
       </a>
     </div>
     `);
-  
+
 const Bldg15 = L.polygon(
   [
     [1474, 719],
@@ -383,8 +385,8 @@ const Bldg16 = L.polygon(
     [1675, 1069],
     [1675, 749],
     [1540, 749],
-    [1540,801],
-    [1475,801],
+    [1540, 801],
+    [1475, 801],
   ],
   {
     color: "transparent",
@@ -588,4 +590,3 @@ const KCPNorthBldg = L.polygon(
       </a>
     </div>
     `);
-

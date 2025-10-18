@@ -18,7 +18,7 @@ body,
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   font-size: 14px;
   transition: background 0.2s;
 }
@@ -46,7 +46,7 @@ body,
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   font-size: 14px;
   transition: background 0.2s;
 }
