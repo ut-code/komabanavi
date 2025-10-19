@@ -5,5 +5,6 @@ export default defineConfig({
     port: 8080,
   },
   publicDir: "./assets",
-  base: process.env.BASE_PATH ?? "/",
+  // base: process.env.BASE_PATH ?? "/",
+  base: "/",
 });
