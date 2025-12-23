@@ -18,37 +18,84 @@ const bounds: LatLngBoundsExpression = [
 L.imageOverlay(im.Komabamap, bounds).addTo(map);
 map.fitBounds(bounds);
 
-// 位置情報変換
-const refPoints = {
-  point1: { lat: 35.658377, lng: 139.688137, x: 615, y: 3481 },
-  point2: { lat: 35.662947, lng: 139.683649, x: 2506, y: 934 },
-};
+// 位置情報の基準点
+const refPoints = [
+  { lat: 35.6592890, lng: 139.6861967, x: 2527, y: 852 }, // point1　イタトマの左下の交差点の右上
+  { lat: 35.6630751, lng: 139.6835443, x: 913, y: 2545 }, // point2 野球場門
+  { lat: 35.6595954, lng: 139.6833344, x: 1292, y: 620 }, // point3　900番講堂左下の曲がり角
+];
 
-function convertLatLngToImageXY(lat: number, lng: number): L.LatLngExpression {
-  const latRatio =
-    (refPoints.point1.x - refPoints.point2.x) /
-    (refPoints.point1.lat - refPoints.point2.lat);
-  const lngRatio =
-    (refPoints.point1.y - refPoints.point2.y) /
-    (refPoints.point1.lng - refPoints.point2.lng);
+// 3点からアフィン変換係数を計算する関数
+function createAffineTransformer(points: { lat: number; lng: number; x: number; y: number }[]) {
+  if (points.length < 3) {
+    console.error("基準点は3つ以上必要です");
+    return (lat: number, lng: number) => [0, 0] as L.LatLngExpression;
+  }
+  const p1 = points[0]!;
+  const p2 = points[1]!;
+  const p3 = points[2]!;
 
-  const x = (lat - refPoints.point1.lat) * latRatio + refPoints.point1.x;
-  const y = (lng - refPoints.point1.lng) * lngRatio + refPoints.point1.y;
+  // 行列式
+  const det =
+    p1.lat * (p2.lng - p3.lng) +
+    p2.lat * (p3.lng - p1.lng) +
+    p3.lat * (p1.lng - p2.lng);
 
-  return [x, y];
+  if (Math.abs(det) < 1e-10) {
+    console.error("3点が一直線上にあります。補正できません。");
+    return (lat: number, lng: number) => [0, 0] as L.LatLngExpression;
+  }
+
+  const A = ((p1.x * (p2.lng - p3.lng)) + (p2.x * (p3.lng - p1.lng)) + (p3.x * (p1.lng - p2.lng))) / det;
+  const B = ((p1.x * (p3.lat - p2.lat)) + (p2.x * (p1.lat - p3.lat)) + (p3.x * (p2.lat - p1.lat))) / det;
+  const C = ((p1.x * (p2.lat * p3.lng - p3.lat * p2.lng)) + (p2.x * (p3.lat * p1.lng - p1.lat * p3.lng)) + (p3.x * (p1.lat * p2.lng - p2.lat * p1.lng))) / det;
+
+  const D = ((p1.y * (p2.lng - p3.lng)) + (p2.y * (p3.lng - p1.lng)) + (p3.y * (p1.lng - p2.lng))) / det;
+  const E = ((p1.y * (p3.lat - p2.lat)) + (p2.y * (p1.lat - p3.lat)) + (p3.y * (p2.lat - p1.lat))) / det;
+  const F = ((p1.y * (p2.lat * p3.lng - p3.lat * p2.lng)) + (p2.y * (p3.lat * p1.lng - p1.lat * p3.lng)) + (p3.y * (p1.lat * p2.lng - p2.lat * p1.lng))) / det;
+
+  return (lat: number, lng: number): L.LatLngExpression => {
+    const x = A * lat + B * lng + C;
+    const y = D * lat + E * lng + F;
+    return [y, x];
+  };
 }
 
+// 変換関数を作成
+const convertLatLngToImageXY = createAffineTransformer(refPoints);
+
 // 位置情報取得
-navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-  const userLat: number = position.coords.latitude;
-  const userLng: number = position.coords.longitude;
+navigator.geolocation.getCurrentPosition(
+  (position: GeolocationPosition) => {
+    const userLat: number = position.coords.latitude;
+    const userLng: number = position.coords.longitude;
 
-  // 緯度経度を画像座標に変換
-  const imageXY = convertLatLngToImageXY(userLat, userLng);
+    // 緯度経度を画像座標に変換（戻り値は既に小数になります）
+    const imageXY = convertLatLngToImageXY(userLat, userLng);
 
-  // マーカーを設置
-  L.marker(imageXY).addTo(map).bindPopup("現在地").openPopup();
-});
+    // マーカーを設置
+    L.marker(imageXY).addTo(map).bindPopup("現在地").openPopup();
+
+    // 取得できた値の確認（必要なら小数2桁で表示）
+    if (Array.isArray(imageXY)) {
+      const [imgY, imgX] = imageXY;
+      console.log(
+        "gps:",
+        { lat: userLat, lng: userLng, accuracy_m: position.coords.accuracy },
+        "imageXY:",
+        { y: Number(imgY.toFixed(2)), x: Number(imgX.toFixed(2)) },
+      );
+    }
+  },
+  (error: GeolocationPositionError) => {
+    console.error("位置情報の取得に失敗しました", error);
+  },
+  {
+    enableHighAccuracy: true,
+    maximumAge: 5_000,
+    timeout: 10_000,
+  },
+);
 
 // クリックした位置の座標（マーカー配置の補助）
 map.on("click", (e) => {
@@ -56,7 +103,7 @@ map.on("click", (e) => {
   console.log("clicked:", lat, lng);
   L.marker([lat, lng])
     .addTo(map)
-    .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
+    .bindPopup(`Y:${lat.toFixed(2)} X:${lng.toFixed(2)}`);
 });
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
@@ -92,8 +139,7 @@ vmbtn.addEventListener("click", () => {
   }
   vmMarkersVisible = !vmMarkersVisible;
 });
-// 例：図書館にマーカー（画像座標で指定）
-L.marker([900, 1900]).addTo(map).bindPopup("一号館");
+
 // 透明のポリゴンを置いて、ポップアップにHTMLを埋め込む
 const library = L.polygon(
   [
