@@ -59,7 +59,19 @@ map.on("click", (e) => {
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
   L.marker([1560,1560]),
+  L.marker([1351,2680]),
+  L.marker([1351,2650]),
+  L.marker([1494,2823]),
+  L.marker([1529,2688]),
+  L.marker([1567,2689]),
+  L.marker([1668,2991]),
+  L.marker([1390,2065]),
+  L.marker([1645,2200]),
   L.marker([1026,2812]),
+  L.marker([1160,1318]),
+  L.marker([1500,860]),
+  L.marker([1340,2788]),
+  L.marker([505,2826]),
 ];
 let wsMarkersVisible = false;
 const wsbtn = document.getElementById("wsMarker")!;
