@@ -103,7 +103,7 @@ vmbtn.addEventListener("click", () => {
   vmMarkersVisible = !vmMarkersVisible;
 });
 // 例：図書館にマーカー（画像座標で指定）
-L.marker([900, 1900]).addTo(map).bindPopup("一号館");
+//L.marker([900, 1900]).addTo(map).bindPopup("一号館");
 // 透明のポリゴンを置いて、ポップアップにHTMLを埋め込む
 const library = L.polygon(
   [
