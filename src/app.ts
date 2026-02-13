@@ -136,7 +136,7 @@ wsbtn.addEventListener("click", () => {
 });
 // 自動販売機のボタンの機能実装
 const orangeIcon = L.icon({
-  iconUrl: "/src/assets/marker-icon-orange.png",
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
   iconSize: [25,41],
   iconAnchor: [12.5,41]
 });
