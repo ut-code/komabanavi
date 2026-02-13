@@ -49,13 +49,13 @@ navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
 });
 
 // クリックした位置の座標（マーカー配置の補助）
-map.on("click", (e) => {
-  const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
-  console.log("clicked:", lat, lng);
-  L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
-});
+// map.on("click", (e) => {
+//   const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
+//   console.log("clicked:", lat, lng);
+//   L.marker([lat, lng])
+//     .addTo(map)
+//     .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
+// });
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
   L.marker([1560,1560]).bindPopup("駒場図書館 1F"),
