@@ -98,17 +98,29 @@ navigator.geolocation.getCurrentPosition(
 );
 
 // クリックした位置の座標（マーカー配置の補助）
-map.on("click", (e) => {
-  const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
-  console.log("clicked:", lat, lng);
-  L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(`Y:${lat.toFixed(2)} X:${lng.toFixed(2)}`);
-});
+// map.on("click", (e) => {
+//   const { lat, lng } = e.latlng; // CRS.Simple でも lat=Y, lng=X
+//   console.log("clicked:", lat, lng);
+//   L.marker([lat, lng])
+//     .addTo(map)
+//     .bindPopup(`X:${lat.toFixed(0)} Y:${lng.toFixed(0)}`);
+// });
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
-  L.marker([1560, 1560]),
-  L.marker([1026, 2812]),
+  L.marker([1560,1560]).bindPopup("駒場図書館 1F"),
+  L.marker([1351,2680]).bindPopup("コミプラ 1F"),
+  L.marker([1351,2650]).bindPopup("コミプラ 2F"),
+  L.marker([1494,2823]).bindPopup("キャンパスプラザA棟 1F"),
+  L.marker([1529,2688]).bindPopup("第2体育館 1F"),
+  L.marker([1567,2689]).bindPopup("第2体育館 2F"),
+  L.marker([1668,2991]).bindPopup("第1体育館 2F"),
+  L.marker([1390,2065]).bindPopup("8号館 1F"),
+  L.marker([1645,2200]).bindPopup("21 KOMCEE West B1F"),
+  L.marker([1026,2812]).bindPopup("5号館 1F"),
+  L.marker([1160,1318]).bindPopup("13号館 1F"),
+  L.marker([1500,860]).bindPopup("15号館 1F"),
+  L.marker([1340,2788]).bindPopup("生協購買部"),
+  L.marker([505,2826]).bindPopup("数理科学研究科棟 1F"),
 ];
 let wsMarkersVisible = false;
 const wsbtn = document.getElementById("wsMarker")!;
@@ -123,9 +135,16 @@ wsbtn.addEventListener("click", () => {
   wsMarkersVisible = !wsMarkersVisible;
 });
 // 自動販売機のボタンの機能実装
+const orangeIcon = L.icon({
+  iconUrl: "/src/assets/marker-icon-orange.png",
+  iconSize: [25,41],
+  iconAnchor: [12.5,41]
+});
 const hiddenVMMarkers: L.Marker[] = [
-  L.marker([1060, 1496]),
-  L.marker([1088, 1648]),
+  L.marker([1097,1504], {icon: orangeIcon}),
+  L.marker([1096,1625], {icon: orangeIcon}),
+  L.marker([1762,2443], {icon: orangeIcon}),
+  L.marker([1686,2536], {icon: orangeIcon}),
 ];
 let vmMarkersVisible = false;
 const vmbtn = document.getElementById("vmMarker")!;
