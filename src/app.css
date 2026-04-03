@@ -20,22 +20,42 @@ body,
 .sidebar-toggle-btn {
   @apply fixed top-6 right-3 z-[2100] p-3 rounded-full bg-yellow-400 text-yellow-900 shadow-lg border font-bold hover:bg-yellow-300 transition duration-200;
 }
+
+/* サイドバーヘッダー */
+.sidebar-header {
+  @apply flex items-center justify-end px-4 py-3 border-b border-gray-200;
+}
+
 .sidebar-close-btn {
-  @apply absolute top-2 right-3 text-gray-400 hover:text-black bg-transparent rounded-full text-2xl font-bold focus:outline-none transition-colors;
+  @apply w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full text-xl font-bold transition-colors;
+}
+
+/* サイドバーコンテンツ */
+.sidebar-content {
+  @apply flex-1 overflow-y-auto px-4 py-4;
+}
+
+/* セクション共通 */
+.sidebar-section {
+  @apply mb-4;
+}
+
+.sidebar-section--github {
+  @apply mt-6 pt-4 border-t border-gray-200;
 }
 
 /* 検索input用簡易装飾 */
 .sidebar-search-input {
-  @apply w-full py-2 px-3 mb-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 text-base;
+  @apply w-full py-2.5 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:bg-white text-base transition-all;
 }
 
 /* 検索結果リスト用スタイル */
 .search-results {
-  @apply bg-white rounded-md border border-gray-200 p-1;
+  @apply mt-2 bg-white rounded-lg border border-gray-200 p-1.5 space-y-1;
 }
 
 .search-result-item {
-  @apply transition-colors duration-150;
+  @apply transition-colors duration-150 rounded-md;
 }
 
 .search-result-item:hover {
@@ -44,12 +64,16 @@ body,
 
 /* サイドバーボタン共通 */
 .sidebar-feature-btn {
-  @apply w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-yellow-100 text-base font-semibold text-gray-800 mt-2 transition-colors;
+  @apply w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-gray-50 hover:bg-yellow-50 text-gray-800 transition-colors border border-gray-200 hover:border-yellow-300;
+}
+
+.sidebar-feature-btn + .sidebar-feature-btn {
+  @apply mt-2;
 }
 
 /* GitHubリンク */
 .sidebar-github-link {
-  @apply flex items-center gap-2 mt-6 text-base hover:underline text-gray-700 font-medium;
+  @apply flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors;
 }
 
 /* 既存ボタン無効化用(将来不要なら削除) */
