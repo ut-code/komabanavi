@@ -375,12 +375,7 @@ export function MapPage() {
                   rel="noopener noreferrer"
                   className="sidebar-github-link"
                 >
-                  <svg
-                    viewBox="0 0 40 48"
-                    width="20"
-                    height="24"
-                    fill="none"
-                  >
+                  <svg viewBox="0 0 40 48" width="20" height="24" fill="none">
                     <path
                       d="M8 2C4.686 2 2 4.686 2 8v28c0 3.314 2.686 6 6 6h20c3.314 0 6-2.686 6-6V8c0-3.314-2.686-6-6-6H8z"
                       fill="#333"
