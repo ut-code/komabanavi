@@ -1,2 +1,6 @@
-# SPA fallback - all routes go to index.html
+# Serve static assets directly
+/assets/* /assets/:splat 200
+/og.png /og.png 200
+
+# SPA fallback
 /* /index.html 200
