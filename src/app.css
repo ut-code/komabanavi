@@ -1,61 +1,23 @@
+@import "tailwindcss";
+
 html,
 body,
 #map {
-  height: 100%;
-  margin: 0;
+  @apply h-full m-0;
 }
+
 .wsButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  transition: background 0.2s;
+  @apply absolute top-2.5 right-2.5 z-[1000] bg-blue-500 text-white border-none px-3 py-2 rounded-lg cursor-pointer flex items-center gap-1.5 shadow-md text-sm transition-colors duration-200 hover:bg-blue-600;
 }
 
 .wsButton img {
-  width: 20px;
-  height: 20px;
-}
-
-.wsButton:hover {
-  background: #2980b9;
+  @apply w-5 h-5;
 }
 
 .vmButton {
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  z-index: 1000;
-  background: #ffa500;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  transition: background 0.2s;
+  @apply absolute top-14 right-2.5 z-[1000] bg-orange-500 text-white border-none px-3 py-2 rounded-lg cursor-pointer flex items-center gap-1.5 shadow-md text-sm transition-colors duration-200 hover:bg-orange-600;
 }
 
 .vmButton img {
-  width: 20px;
-  height: 20px;
-}
-
-.vmButton:hover {
-  background: #ffa500;
+  @apply w-5 h-5;
 }

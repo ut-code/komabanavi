@@ -9,26 +9,11 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <script src="/src/app.ts" async defer type="module"></script>
-    <link rel="stylesheet" href="/src/app.css" />
   </head>
 
   <body>
-    <div id="map"></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <button id="wsMarker" class="wsButton">
-      <!--ウォーターサーバーのボタン-->
-      <img
-        src="/src/assets/waterserver.webp"
-        alt="ウォーターサーバーのボタン"
-      />
-      ウォーターサーバー
-    </button>
-    <button id="vmMarker" class="vmButton">
-      <!--自動販売機のボタン-->
-      <img src="/src/assets/vendingmachine.webp" alt="自動販売機のボタン" />
-      自動販売機
-    </button>
   </body>
 </html>

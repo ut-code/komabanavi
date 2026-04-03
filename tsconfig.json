@@ -13,6 +13,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "jsx": "react-jsx",
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
