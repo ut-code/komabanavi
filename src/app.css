@@ -6,18 +6,41 @@ body,
   @apply h-full m-0;
 }
 
-.wsButton {
-  @apply absolute top-2.5 right-2.5 z-[1000] bg-blue-500 text-white border-none px-3 py-2 rounded-lg cursor-pointer flex items-center gap-1.5 shadow-md text-sm transition-colors duration-200 hover:bg-blue-600;
+/* --- サイドバー演出 --- */
+.sidebar-overlay {
+  @apply fixed inset-0 z-[2100] bg-black transition-opacity duration-300;
+}
+.sidebar-drawer {
+  @apply fixed top-0 right-0 h-full w-72 max-w-full bg-white shadow-2xl z-[2200] flex flex-col transition-transform duration-300;
+  transform: translateX(100%);
+}
+.sidebar-drawer.open {
+  transform: translateX(0);
+}
+.sidebar-toggle-btn {
+  @apply fixed top-6 right-3 z-[2100] p-3 rounded-full bg-yellow-400 text-yellow-900 shadow-lg border font-bold hover:bg-yellow-300 transition duration-200;
+}
+.sidebar-close-btn {
+  @apply absolute top-2 right-3 text-gray-400 hover:text-black bg-transparent rounded-full text-2xl font-bold focus:outline-none transition-colors;
 }
 
-.wsButton img {
-  @apply w-5 h-5;
+/* 検索input用簡易装飾 */
+.sidebar-search-input {
+  @apply w-full py-2 px-3 mb-4 rounded-md border border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-base;
 }
 
+/* サイドバーボタン共通 */
+.sidebar-feature-btn {
+  @apply w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-yellow-100 text-base font-semibold text-gray-800 mt-2 transition-colors;
+}
+
+/* GitHubリンク */
+.sidebar-github-link {
+  @apply flex items-center gap-2 mt-6 text-base hover:underline text-gray-700 font-medium;
+}
+
+/* 既存ボタン無効化用(将来不要なら削除) */
+.wsButton,
 .vmButton {
-  @apply absolute top-14 right-2.5 z-[1000] bg-orange-500 text-white border-none px-3 py-2 rounded-lg cursor-pointer flex items-center gap-1.5 shadow-md text-sm transition-colors duration-200 hover:bg-orange-600;
-}
-
-.vmButton img {
-  @apply w-5 h-5;
+  display: none !important;
 }
