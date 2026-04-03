@@ -367,6 +367,61 @@ export function MapPage() {
                 </a>
               </div>
 
+              {/* UTCodeリンクセクション */}
+              <div className="sidebar-section sidebar-section--github">
+                <a
+                  href="https://utcode.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sidebar-github-link"
+                >
+                  <svg
+                    viewBox="0 0 40 48"
+                    width="20"
+                    height="24"
+                    fill="none"
+                  >
+                    <path
+                      d="M8 2C4.686 2 2 4.686 2 8v28c0 3.314 2.686 6 6 6h20c3.314 0 6-2.686 6-6V8c0-3.314-2.686-6-6-6H8z"
+                      fill="#333"
+                    />
+                    <path
+                      d="M8 2C4.686 2 2 4.686 2 8v10h8c3.314 0 6-2.686 6-6V2H8z"
+                      fill="#333"
+                    />
+                    <text
+                      x="10"
+                      y="18"
+                      fill="#fff"
+                      fontSize="14"
+                      fontFamily="sans-serif"
+                      fontWeight="bold"
+                    >
+                      UT
+                    </text>
+                    <text
+                      x="10"
+                      y="34"
+                      fill="#fff"
+                      fontSize="14"
+                      fontFamily="sans-serif"
+                      fontWeight="bold"
+                    >
+                      .C
+                    </text>
+                    <path
+                      d="M28 36l-4 2 1-2h-3"
+                      stroke="#fff"
+                      strokeWidth="1.2"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span>ut.code(); ホームページ</span>
+                </a>
+              </div>
+
               {/* GitHubリンクセクション */}
               <div className="sidebar-section sidebar-section--github">
                 <a
