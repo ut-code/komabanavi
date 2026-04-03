@@ -90,7 +90,7 @@ export function MapPage() {
             `
             <div style="text-align: center;">
               <p style="margin: 0 0 8px 0; font-weight: bold;">${item.name}</p>
-              <a href="/building/${item.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">階層図を表示</a>
+              <a href="/building/${item.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">詳細</a>
             </div>
           `,
           )
@@ -327,6 +327,29 @@ export function MapPage() {
                   </svg>
                   <span>{vmLabel}</span>
                 </button>
+              </div>
+
+              {/* ヘルプリンクセクション */}
+              <div className="sidebar-section sidebar-section--help">
+                <a
+                  href="/usage"
+                  className="sidebar-help-link"
+                >
+                  <svg
+                    className="w-5 h-5 text-gray-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                  <span>使い方</span>
+                </a>
               </div>
 
               {/* GitHubリンクセクション */}

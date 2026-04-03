@@ -186,6 +186,15 @@ export function BuildingPage() {
         </Link>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="p-8">
+            <h1 className="text-4xl font-bold mb-2">{building.name}</h1>
+            <p className="text-gray-600 text-lg mb-6">{building.description}</p>
+          </div>
+
+          <div className="px-8 pb-8">
+            <h2 className="text-2xl font-bold mb-4">階層図</h2>
+          </div>
+
           <div
             className="bg-gray-200 overflow-auto"
             style={{ maxHeight: "600px" }}
@@ -204,14 +213,10 @@ export function BuildingPage() {
           </div>
 
           <div className="p-8">
-            <h1 className="text-4xl font-bold mb-2">{building.name}</h1>
-            <p className="text-gray-600 text-lg mb-6">{building.description}</p>
-
-            <div className="mt-8 p-4 bg-gray-100 rounded">
-              <h2 className="text-xl font-semibold mb-2">Floor Plan</h2>
+            <div className="p-4 bg-gray-100 rounded">
+              <h3 className="text-lg font-semibold mb-2">フロア情報</h3>
               <p className="text-gray-600">
-                For detailed information about rooms and facilities in this
-                building, please refer to the floor plan above.
+                各階の教室や施設の詳細については、上の階層図をご参照ください。
               </p>
             </div>
           </div>

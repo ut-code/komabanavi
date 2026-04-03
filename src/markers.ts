@@ -85,7 +85,7 @@ export function setupBuildingPolygons(map: L.Map) {
     <div style="text-align: center; padding: 8px;">
       <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 16px;">${name}</p>
       <a href="/building/${buildingId}" style="${buttonStyle}" onmouseover="this.style.backgroundColor='#2563eb'" onmouseout="this.style.backgroundColor='#3b82f6'">
-        階層図を表示
+        詳細
       </a>
     </div>
     `;

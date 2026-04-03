@@ -44,6 +44,10 @@ body,
   @apply mt-6 pt-4 border-t border-gray-200;
 }
 
+.sidebar-section--help {
+  @apply pt-2;
+}
+
 /* 検索input用簡易装飾 */
 .search-input-wrapper {
   @apply relative flex items-center;
@@ -81,6 +85,11 @@ body,
 
 /* GitHubリンク */
 .sidebar-github-link {
+  @apply flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors;
+}
+
+/* ヘルプリンク */
+.sidebar-help-link {
   @apply flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors;
 }
 
