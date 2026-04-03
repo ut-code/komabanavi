@@ -257,10 +257,28 @@ export function MapPage() {
                                 stroke="currentColor"
                                 strokeWidth="2"
                               >
-                                <rect x="4" y="2" width="16" height="20" rx="2" />
+                                <rect
+                                  x="4"
+                                  y="2"
+                                  width="16"
+                                  height="20"
+                                  rx="2"
+                                />
                                 <line x1="4" y1="10" x2="20" y2="10" />
-                                <rect x="7" y="4" width="4" height="4" rx="0.5" />
-                                <rect x="13" y="4" width="4" height="4" rx="0.5" />
+                                <rect
+                                  x="7"
+                                  y="4"
+                                  width="4"
+                                  height="4"
+                                  rx="0.5"
+                                />
+                                <rect
+                                  x="13"
+                                  y="4"
+                                  width="4"
+                                  height="4"
+                                  rx="0.5"
+                                />
                               </svg>
                               自動販売機
                             </>
@@ -331,10 +349,7 @@ export function MapPage() {
 
               {/* ヘルプリンクセクション */}
               <div className="sidebar-section sidebar-section--help">
-                <a
-                  href="/usage"
-                  className="sidebar-help-link"
-                >
+                <a href="/usage" className="sidebar-help-link">
                   <svg
                     className="w-5 h-5 text-gray-500"
                     viewBox="0 0 24 24"

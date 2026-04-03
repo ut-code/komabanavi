@@ -25,9 +25,7 @@ export function UsagePage() {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="p-8 border-b border-gray-200">
             <h1 className="text-3xl font-bold text-gray-900">使い方</h1>
-            <p className="text-gray-500 mt-2">
-              駒場キャンパスナビの操作方法
-            </p>
+            <p className="text-gray-500 mt-2">駒場キャンパスナビの操作方法</p>
           </div>
 
           <div className="p-8 space-y-8">
@@ -222,12 +220,7 @@ export function UsagePage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors"
           >
-            <svg
-              aria-hidden="true"
-              height="18"
-              viewBox="0 0 16 16"
-              width="18"
-            >
+            <svg aria-hidden="true" height="18" viewBox="0 0 16 16" width="18">
               <path
                 fillRule="evenodd"
                 fill="currentColor"
