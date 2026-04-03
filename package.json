@@ -1,7 +1,7 @@
 {
   "name": "komaba-navi",
   "version": "1.0.0",
-  "description": "東大キャンパスマップ。",
+  "description": "Komaba Campus map",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "npx prettier . --write",
@@ -13,20 +13,16 @@
     "type": "git",
     "url": "git+https://github.com/ut-code/komabanavi.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ut-code/komabanavi/issues"
-  },
-  "homepage": "https://github.com/ut-code/komabanavi#readme",
+  "author": "ut-code",
+  "license": "MIT",
   "devDependencies": {
-    "@types/leaflet": "^1.9.20",
-    "prettier": "^3.6.2",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^25.5.0",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.2",
-    "vite": "^7.1.6"
+    "vite": "^8.0.3"
   },
   "dependencies": {
-    "@types/node": "^24.5.2",
     "leaflet": "^1.9.4"
   }
 }
