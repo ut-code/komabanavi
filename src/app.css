@@ -1,61 +1,100 @@
+@import "tailwindcss";
+
 html,
 body,
 #map {
-  height: 100%;
-  margin: 0;
-}
-.wsButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  transition: background 0.2s;
+  @apply h-full m-0;
 }
 
-.wsButton img {
-  width: 20px;
-  height: 20px;
+/* --- サイドバー演出 --- */
+.sidebar-overlay {
+  @apply fixed inset-0 z-[2100] bg-black transition-opacity duration-300;
+}
+.sidebar-drawer {
+  @apply fixed top-0 right-0 h-full w-72 max-w-full bg-white shadow-2xl z-[2200] flex flex-col transition-transform duration-300;
+  transform: translateX(100%);
+}
+.sidebar-drawer.open {
+  transform: translateX(0);
+}
+.sidebar-toggle-btn {
+  @apply fixed top-6 right-3 z-[2100] p-3 rounded-full bg-yellow-400 text-yellow-900 shadow-lg border font-bold hover:bg-yellow-300 transition duration-200;
 }
 
-.wsButton:hover {
-  background: #2980b9;
+/* サイドバーヘッダー */
+.sidebar-header {
+  @apply flex items-center justify-end px-4 py-3 border-b border-gray-200;
 }
 
+.sidebar-close-btn {
+  @apply w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full text-xl font-bold transition-colors;
+}
+
+/* サイドバーコンテンツ */
+.sidebar-content {
+  @apply flex-1 overflow-y-auto px-4 py-4;
+}
+
+/* セクション共通 */
+.sidebar-section {
+  @apply mb-4;
+}
+
+.sidebar-section--github {
+  @apply mt-6 pt-4 border-t border-gray-200;
+}
+
+.sidebar-section--help {
+  @apply pt-2;
+}
+
+/* 検索input用簡易装飾 */
+.search-input-wrapper {
+  @apply relative flex items-center;
+}
+
+.search-icon {
+  @apply absolute left-3 text-gray-400 pointer-events-none;
+}
+
+.sidebar-search-input {
+  @apply w-full py-2.5 pl-9 pr-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:bg-white text-base transition-all;
+}
+
+/* 検索結果リスト用スタイル */
+.search-results {
+  @apply mt-2 bg-white rounded-lg border border-gray-200 p-1.5 space-y-1;
+}
+
+.search-result-item {
+  @apply transition-colors duration-150 rounded-md;
+}
+
+.search-result-item:hover {
+  @apply bg-yellow-50;
+}
+
+/* サイドバーボタン共通 */
+.sidebar-feature-btn {
+  @apply w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-gray-50 hover:bg-yellow-50 text-gray-800 transition-colors border border-gray-200 hover:border-yellow-300;
+}
+
+.sidebar-feature-btn + .sidebar-feature-btn {
+  @apply mt-2;
+}
+
+/* GitHubリンク */
+.sidebar-github-link {
+  @apply flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors;
+}
+
+/* ヘルプリンク */
+.sidebar-help-link {
+  @apply flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors;
+}
+
+/* 既存ボタン無効化用(将来不要なら削除) */
+.wsButton,
 .vmButton {
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  z-index: 1000;
-  background: #ffa500;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  transition: background 0.2s;
-}
-
-.vmButton img {
-  width: 20px;
-  height: 20px;
-}
-
-.vmButton:hover {
-  background: #ffa500;
+  display: none !important;
 }
