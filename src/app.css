@@ -45,8 +45,16 @@ body,
 }
 
 /* 検索input用簡易装飾 */
+.search-input-wrapper {
+  @apply relative flex items-center;
+}
+
+.search-icon {
+  @apply absolute left-3 text-gray-400 pointer-events-none;
+}
+
 .sidebar-search-input {
-  @apply w-full py-2.5 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:bg-white text-base transition-all;
+  @apply w-full py-2.5 pl-9 pr-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:bg-white text-base transition-all;
 }
 
 /* 検索結果リスト用スタイル */

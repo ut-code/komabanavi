@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
-import * as im from "../assets";
+import { Komabamap } from "../assets";
 import { setupGeolocation } from "../geolocation";
 import {
   setupBuildingPolygons,
@@ -32,7 +32,7 @@ export function MapPage() {
       [0, 0],
       [imgHeight, imgWidth],
     ];
-    L.imageOverlay(im.Komabamap, bounds).addTo(map);
+    L.imageOverlay(Komabamap, bounds).addTo(map);
     map.fitBounds(bounds);
     mapRef.current = map;
     setupGeolocation(map);
@@ -120,13 +120,24 @@ export function MapPage() {
       {/* Map背景 */}
       <div ref={containerRef} className="w-full h-full" />
 
-      {/* サイドバーを開く≡ボタン */}
+      {/* サイドバーを開くメニューボタン */}
       <button
         className="sidebar-toggle-btn"
         onClick={() => setSidebarOpen(true)}
         aria-label="メニューを開く"
       >
-        &#x2630;
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        >
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
       </button>
 
       {/* サイドバーオーバーレイ＋ドロワー */}
@@ -145,7 +156,17 @@ export function MapPage() {
                 onClick={() => setSidebarOpen(false)}
                 aria-label="閉じる"
               >
-                ×
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
               </button>
             </div>
 
@@ -153,13 +174,26 @@ export function MapPage() {
             <div className="sidebar-content">
               {/* 検索セクション */}
               <div className="sidebar-section">
-                <input
-                  className="sidebar-search-input"
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="建物・施設を検索"
-                />
+                <div className="search-input-wrapper">
+                  <svg
+                    className="search-icon w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <input
+                    className="sidebar-search-input"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    placeholder="建物・施設を検索"
+                  />
+                </div>
 
                 {/* 検索結果表示 */}
                 {searchQuery && searchResults.length > 0 && (
@@ -178,11 +212,59 @@ export function MapPage() {
                             {item.description}
                           </div>
                         )}
-                        <div className="text-xs text-gray-400 mt-0.5">
-                          {item.type === "building" && "🏢 建物"}
-                          {item.type === "waterServer" &&
-                            "💧 ウォーターサーバー"}
-                          {item.type === "vendingMachine" && "🥤 自動販売機"}
+                        <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                          {item.type === "building" && (
+                            <>
+                              <svg
+                                className="w-3 h-3"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M3 21h18" />
+                                <path d="M5 21V7l8-4v18" />
+                                <path d="M19 21V11l-6-4" />
+                                <path d="M9 9h1" />
+                                <path d="M9 13h1" />
+                                <path d="M9 17h1" />
+                              </svg>
+                              建物
+                            </>
+                          )}
+                          {item.type === "waterServer" && (
+                            <>
+                              <svg
+                                className="w-3 h-3"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M12 2v6" />
+                                <path d="M8 8h8" />
+                                <path d="M7 8v8a5 5 0 0 0 10 0V8z" />
+                              </svg>
+                              ウォーターサーバー
+                            </>
+                          )}
+                          {item.type === "vendingMachine" && (
+                            <>
+                              <svg
+                                className="w-3 h-3"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <rect x="4" y="2" width="16" height="20" rx="2" />
+                                <line x1="4" y1="10" x2="20" y2="10" />
+                                <rect x="7" y="4" width="4" height="4" rx="0.5" />
+                                <rect x="13" y="4" width="4" height="4" rx="0.5" />
+                              </svg>
+                              自動販売機
+                            </>
+                          )}
                         </div>
                       </button>
                     ))}
@@ -203,22 +285,46 @@ export function MapPage() {
                   className="sidebar-feature-btn"
                   onClick={handleWsMarkerToggle}
                 >
-                  <img
-                    src={im.WaterServer}
-                    alt="ウォーターサーバー"
-                    className="w-5 h-5"
-                  />
+                  {/* ウォーターサーバーSVGアイコン */}
+                  <svg
+                    className="w-5 h-5 text-blue-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 2v6" />
+                    <path d="M8 8h8" />
+                    <path d="M7 8v8a5 5 0 0 0 10 0V8z" />
+                    <path d="M9 18h6" />
+                    <path d="M10 2h4" />
+                  </svg>
                   <span>{wsLabel}</span>
                 </button>
                 <button
                   className="sidebar-feature-btn"
                   onClick={handleVmMarkerToggle}
                 >
-                  <img
-                    src={im.VendingMachine}
-                    alt="自動販売機"
-                    className="w-5 h-5"
-                  />
+                  {/* 自動販売機SVGアイコン */}
+                  <svg
+                    className="w-5 h-5 text-orange-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="4" y="2" width="16" height="20" rx="2" />
+                    <line x1="4" y1="10" x2="20" y2="10" />
+                    <rect x="7" y="4" width="4" height="4" rx="0.5" />
+                    <rect x="13" y="4" width="4" height="4" rx="0.5" />
+                    <rect x="7" y="12" width="10" height="4" rx="0.5" />
+                    <line x1="8" y1="19" x2="8" y2="19" />
+                    <line x1="16" y1="19" x2="16" y2="19" />
+                  </svg>
                   <span>{vmLabel}</span>
                 </button>
               </div>
