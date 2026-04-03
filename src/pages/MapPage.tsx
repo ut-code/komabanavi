@@ -8,6 +8,7 @@ import {
   setupVendingMachineMarkers,
   toggleMarkers,
 } from "../markers";
+import { searchItems, type SearchableItem } from "../search";
 
 const imgWidth = 4000;
 const imgHeight = 2800;
@@ -20,6 +21,9 @@ export function MapPage() {
   const [wsMarkersVisible, setWsMarkersVisible] = useState(false);
   const [vmMarkersVisible, setVmMarkersVisible] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchableItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -64,6 +68,47 @@ export function MapPage() {
     }
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    const results = searchItems(query);
+    setSearchResults(results);
+  };
+
+  const handleSelectItem = (item: SearchableItem) => {
+    setSelectedItem(item);
+    if (mapRef.current) {
+      // Fly to the selected item's location
+      mapRef.current.flyTo([item.lat, item.lng], 0, {
+        duration: 1.5,
+      });
+
+      // If it's a building with a detail page, show a popup with link
+      if (item.type === "building" && item.buildingId) {
+        L.popup()
+          .setLatLng([item.lat, item.lng])
+          .setContent(
+            `
+            <div style="text-align: center;">
+              <p style="margin: 0 0 8px 0; font-weight: bold;">${item.name}</p>
+              <a href="/building/${item.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">階層図を表示</a>
+            </div>
+          `,
+          )
+          .openOn(mapRef.current);
+      } else {
+        // Show popup for water servers and vending machines
+        L.popup()
+          .setLatLng([item.lat, item.lng])
+          .setContent(
+            `<b>${item.name}</b>${item.description ? `<br>${item.description}` : ""}`,
+          )
+          .openOn(mapRef.current);
+      }
+    }
+    // Close sidebar after selection
+    setSidebarOpen(false);
+  };
+
   // サイドバー内部ボタンのラベルを状態依存で切替
   const wsLabel = wsMarkersVisible
     ? "ウォーターサーバーを非表示"
@@ -102,13 +147,46 @@ export function MapPage() {
               ×
             </button>
 
-            {/* 検索インプット：UIのみで機能未実装 */}
+            {/* 検索インプット */}
             <input
               className="sidebar-search-input"
               type="text"
-              disabled
-              placeholder="地図上で検索（未実装）"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="建物・施設を検索"
             />
+
+            {/* 検索結果表示 */}
+            {searchQuery && searchResults.length > 0 && (
+              <div className="search-results max-h-64 overflow-y-auto mb-4">
+                {searchResults.map((item) => (
+                  <button
+                    key={item.id}
+                    className="search-result-item w-full text-left px-3 py-2 rounded-md hover:bg-gray-200 cursor-pointer text-sm border-b border-gray-200 last:border-b-0"
+                    onClick={() => handleSelectItem(item)}
+                  >
+                    <div className="font-medium text-gray-800">{item.name}</div>
+                    {item.description && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        {item.description}
+                      </div>
+                    )}
+                    <div className="text-xs text-gray-400 mt-1">
+                      {item.type === "building" && "🏢 建物"}
+                      {item.type === "waterServer" && "💧 ウォーターサーバー"}
+                      {item.type === "vendingMachine" && "🥤 自動販売機"}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* 検索結果が0件の場合 */}
+            {searchQuery && searchResults.length === 0 && (
+              <div className="text-center text-gray-500 text-sm py-4">
+                該当する結果が見つかりませんでした
+              </div>
+            )}
 
             {/* 表示トグルボタン */}
             <button
