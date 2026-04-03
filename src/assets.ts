@@ -1,25 +1,25 @@
 import Komabamap from "./assets/Komabamap.svg";
 
-import Building1 from "./assets/buildings/Building1.svg";
-import Building5 from "./assets/buildings/Building5.svg";
-import Building7 from "./assets/buildings/Building7.svg";
-import Building8 from "./assets/buildings/Building8.svg";
-import Building10 from "./assets/buildings/Bldg10.svg";
-import Building11 from "./assets/buildings/Bldg11.svg";
-import Building12 from "./assets/buildings/Building12.svg";
-import Building13 from "./assets/buildings/Bldg13.svg";
-import Building15 from "./assets/buildings/Building15.svg";
-import Building16 from "./assets/buildings/Building16.svg";
-import Building17 from "./assets/buildings/Building17.svg";
-import Building18 from "./assets/buildings/Building18.svg";
-import Building900 from "./assets/buildings/LectureHall900.svg";
+import Building1 from "./assets/buildings/Building1.avif";
+import Building5 from "./assets/buildings/Building5.avif";
+import Building7 from "./assets/buildings/Building7.avif";
+import Building8 from "./assets/buildings/Building8.avif";
+import Building10 from "./assets/buildings/Bldg10.avif";
+import Building11 from "./assets/buildings/Bldg11.avif";
+import Building12 from "./assets/buildings/Building12.avif";
+import Building13 from "./assets/buildings/Bldg13.avif";
+import Building15 from "./assets/buildings/Building15.avif";
+import Building16 from "./assets/buildings/Building16.avif";
+import Building17 from "./assets/buildings/Building17.avif";
+import Building18 from "./assets/buildings/Building18.avif";
+import Building900 from "./assets/buildings/LectureHall900.avif";
 
-import KOMCEEWest from "./assets/buildings/KOMCEE21West.svg";
-import KOMCEEEast from "./assets/buildings/KOMCEE21East.svg";
+import KOMCEEWest from "./assets/buildings/KOMCEE21West.avif";
+import KOMCEEEast from "./assets/buildings/KOMCEE21East.avif";
 
-import InfoEduBuild from "./assets/buildings/InfoEduBuild.svg";
-import AdministrationOffice from "./assets/buildings/AdministrationBuilding.svg";
-import KCPNorthBldg from "./assets/buildings/ComiplaNorthBuilding.svg";
+import InfoEduBuild from "./assets/buildings/InfoEduBuild.avif";
+import AdministrationOffice from "./assets/buildings/AdministrationBuilding.avif";
+import KCPNorthBldg from "./assets/buildings/ComiplaNorthBuilding.avif";
 
 import WaterServer from "./assets/WaterServer.svg";
 import VendingMachine from "./assets/VendingMachine.svg";
