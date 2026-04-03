@@ -20,13 +20,15 @@ map.fitBounds(bounds);
 
 // 位置情報の基準点
 const refPoints = [
-  { lat: 35.6592890, lng: 139.6861967, x: 2527, y: 852 }, // point1　イタトマの左下の交差点の右上
+  { lat: 35.659289, lng: 139.6861967, x: 2527, y: 852 }, // point1　イタトマの左下の交差点の右上
   { lat: 35.6630751, lng: 139.6835443, x: 913, y: 2545 }, // point2 野球場門
   { lat: 35.6595954, lng: 139.6833344, x: 1292, y: 620 }, // point3　900番講堂左下の曲がり角
 ];
 
 // 3点からアフィン変換係数を計算する関数
-function createAffineTransformer(points: { lat: number; lng: number; x: number; y: number }[]) {
+function createAffineTransformer(
+  points: { lat: number; lng: number; x: number; y: number }[],
+) {
   if (points.length < 3) {
     console.error("基準点は3つ以上必要です");
     return (lat: number, lng: number) => [0, 0] as L.LatLngExpression;
@@ -46,13 +48,37 @@ function createAffineTransformer(points: { lat: number; lng: number; x: number; 
     return (lat: number, lng: number) => [0, 0] as L.LatLngExpression;
   }
 
-  const A = ((p1.x * (p2.lng - p3.lng)) + (p2.x * (p3.lng - p1.lng)) + (p3.x * (p1.lng - p2.lng))) / det;
-  const B = ((p1.x * (p3.lat - p2.lat)) + (p2.x * (p1.lat - p3.lat)) + (p3.x * (p2.lat - p1.lat))) / det;
-  const C = ((p1.x * (p2.lat * p3.lng - p3.lat * p2.lng)) + (p2.x * (p3.lat * p1.lng - p1.lat * p3.lng)) + (p3.x * (p1.lat * p2.lng - p2.lat * p1.lng))) / det;
+  const A =
+    (p1.x * (p2.lng - p3.lng) +
+      p2.x * (p3.lng - p1.lng) +
+      p3.x * (p1.lng - p2.lng)) /
+    det;
+  const B =
+    (p1.x * (p3.lat - p2.lat) +
+      p2.x * (p1.lat - p3.lat) +
+      p3.x * (p2.lat - p1.lat)) /
+    det;
+  const C =
+    (p1.x * (p2.lat * p3.lng - p3.lat * p2.lng) +
+      p2.x * (p3.lat * p1.lng - p1.lat * p3.lng) +
+      p3.x * (p1.lat * p2.lng - p2.lat * p1.lng)) /
+    det;
 
-  const D = ((p1.y * (p2.lng - p3.lng)) + (p2.y * (p3.lng - p1.lng)) + (p3.y * (p1.lng - p2.lng))) / det;
-  const E = ((p1.y * (p3.lat - p2.lat)) + (p2.y * (p1.lat - p3.lat)) + (p3.y * (p2.lat - p1.lat))) / det;
-  const F = ((p1.y * (p2.lat * p3.lng - p3.lat * p2.lng)) + (p2.y * (p3.lat * p1.lng - p1.lat * p3.lng)) + (p3.y * (p1.lat * p2.lng - p2.lat * p1.lng))) / det;
+  const D =
+    (p1.y * (p2.lng - p3.lng) +
+      p2.y * (p3.lng - p1.lng) +
+      p3.y * (p1.lng - p2.lng)) /
+    det;
+  const E =
+    (p1.y * (p3.lat - p2.lat) +
+      p2.y * (p1.lat - p3.lat) +
+      p3.y * (p2.lat - p1.lat)) /
+    det;
+  const F =
+    (p1.y * (p2.lat * p3.lng - p3.lat * p2.lng) +
+      p2.y * (p3.lat * p1.lng - p1.lat * p3.lng) +
+      p3.y * (p1.lat * p2.lng - p2.lat * p1.lng)) /
+    det;
 
   return (lat: number, lng: number): L.LatLngExpression => {
     const x = A * lat + B * lng + C;
@@ -107,20 +133,20 @@ navigator.geolocation.getCurrentPosition(
 // });
 // ウォーターサーバーのボタンの機能実装
 const hiddenWSMarkers: L.Marker[] = [
-  L.marker([1560,1560]).bindPopup("駒場図書館 1F"),
-  L.marker([1351,2680]).bindPopup("コミプラ 1F"),
-  L.marker([1351,2650]).bindPopup("コミプラ 2F"),
-  L.marker([1494,2823]).bindPopup("キャンパスプラザA棟 1F"),
-  L.marker([1529,2688]).bindPopup("第2体育館 1F"),
-  L.marker([1567,2689]).bindPopup("第2体育館 2F"),
-  L.marker([1668,2991]).bindPopup("第1体育館 2F"),
-  L.marker([1390,2065]).bindPopup("8号館 1F"),
-  L.marker([1645,2200]).bindPopup("21 KOMCEE West B1F"),
-  L.marker([1026,2812]).bindPopup("5号館 1F"),
-  L.marker([1160,1318]).bindPopup("13号館 1F"),
-  L.marker([1500,860]).bindPopup("15号館 1F"),
-  L.marker([1340,2788]).bindPopup("生協購買部"),
-  L.marker([505,2826]).bindPopup("数理科学研究科棟 1F"),
+  L.marker([1560, 1560]).bindPopup("駒場図書館 1F"),
+  L.marker([1351, 2680]).bindPopup("コミプラ 1F"),
+  L.marker([1351, 2650]).bindPopup("コミプラ 2F"),
+  L.marker([1494, 2823]).bindPopup("キャンパスプラザA棟 1F"),
+  L.marker([1529, 2688]).bindPopup("第2体育館 1F"),
+  L.marker([1567, 2689]).bindPopup("第2体育館 2F"),
+  L.marker([1668, 2991]).bindPopup("第1体育館 2F"),
+  L.marker([1390, 2065]).bindPopup("8号館 1F"),
+  L.marker([1645, 2200]).bindPopup("21 KOMCEE West B1F"),
+  L.marker([1026, 2812]).bindPopup("5号館 1F"),
+  L.marker([1160, 1318]).bindPopup("13号館 1F"),
+  L.marker([1500, 860]).bindPopup("15号館 1F"),
+  L.marker([1340, 2788]).bindPopup("生協購買部"),
+  L.marker([505, 2826]).bindPopup("数理科学研究科棟 1F"),
 ];
 let wsMarkersVisible = false;
 const wsbtn = document.getElementById("wsMarker")!;
@@ -136,15 +162,16 @@ wsbtn.addEventListener("click", () => {
 });
 // 自動販売機のボタンの機能実装
 const orangeIcon = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
-  iconSize: [25,41],
-  iconAnchor: [12.5,41]
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+  iconSize: [25, 41],
+  iconAnchor: [12.5, 41],
 });
 const hiddenVMMarkers: L.Marker[] = [
-  L.marker([1097,1504], {icon: orangeIcon}),
-  L.marker([1096,1625], {icon: orangeIcon}),
-  L.marker([1762,2443], {icon: orangeIcon}),
-  L.marker([1686,2536], {icon: orangeIcon}),
+  L.marker([1097, 1504], { icon: orangeIcon }),
+  L.marker([1096, 1625], { icon: orangeIcon }),
+  L.marker([1762, 2443], { icon: orangeIcon }),
+  L.marker([1686, 2536], { icon: orangeIcon }),
 ];
 let vmMarkersVisible = false;
 const vmbtn = document.getElementById("vmMarker")!;
