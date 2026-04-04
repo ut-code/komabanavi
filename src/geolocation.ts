@@ -331,14 +331,33 @@ function createAffineTransformer(
 // Create transformation function (automatically chooses polynomial if 4+ points)
 const convertLatLngToImageXY = createPolynomialTransformer(refPoints);
 
+export interface GeolocationOptions {
+  /** デバッグ用: 現在地を固定座標(画像ピクセル)で指定する */
+  debugPosition?: [number, number];
+}
+
 export function setupGeolocation(
   map: L.Map,
   imgWidth: number,
   imgHeight: number,
+  options?: GeolocationOptions,
 ) {
   let userMarker: L.Marker | null = null;
+  let userCircle: L.Circle | null = null;
   let watchId: number | null = null;
   let hasAlerted = false;
+
+  // デバッグ用固定位置がある場合はそれを使用
+  if (options?.debugPosition) {
+    const [imgY, imgX] = options.debugPosition;
+    placeOrUpdateMarker(map, [imgY, imgX], 0, () => {
+      userMarker = null;
+      userCircle = null;
+    });
+    return {
+      cleanup: () => {},
+    };
+  }
 
   // Get location information
   watchId = navigator.geolocation.watchPosition(
@@ -390,16 +409,10 @@ export function setupGeolocation(
         return;
       }
 
-      // Remove existing marker to prevent duplicates
-      if (userMarker) {
-        map.removeLayer(userMarker);
-      }
-
-      // Place marker
-      userMarker = L.marker(imageXY)
-        .addTo(map)
-        .bindPopup("Current Location")
-        .openPopup();
+      placeOrUpdateMarker(map, [imgY, imgX], accuracy, () => {
+        userMarker = null;
+        userCircle = null;
+      });
 
       // Show error warning only when inside map bounds and error is large
       if (accuracy > ERROR_THRESHOLD_METERS && !hasAlerted) {
@@ -439,4 +452,59 @@ export function setupGeolocation(
       }
     },
   };
+}
+
+function placeOrUpdateMarker(
+  map: L.Map,
+  latlng: L.LatLngExpression,
+  accuracy: number,
+  onClear: () => void,
+) {
+  // Remove existing marker/circle
+  const existingMarker = (map as any)._userMarker as L.Marker | undefined;
+  const existingCircle = (map as any)._userCircle as L.Circle | undefined;
+  if (existingMarker) {
+    map.removeLayer(existingMarker);
+  }
+  if (existingCircle) {
+    map.removeLayer(existingCircle);
+  }
+
+  // 精度円 (accuracy radius in meters, but since this is a custom CRS map,
+  // we use a visual radius in pixels)
+  const radius = Math.max(accuracy, 10);
+  const circle = L.circle(latlng, {
+    radius,
+    color: "#3b82f6",
+    fillColor: "#3b82f6",
+    fillOpacity: 0.2,
+    weight: 2,
+  }).addTo(map);
+
+  // 中心点のマーカー（小さなドット）
+  const dotIcon = L.divIcon({
+    className: "user-location-dot",
+    html: `<div style="
+      width: 16px;
+      height: 16px;
+      background: #3b82f6;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(59,130,246,0.6);
+    "></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  });
+
+  const marker = L.marker(latlng, {
+    icon: dotIcon,
+    zIndexOffset: 1000,
+  })
+    .addTo(map)
+    .bindPopup("Current Location")
+    .openPopup();
+
+  // Store references on map for cleanup
+  (map as any)._userMarker = marker;
+  (map as any)._userCircle = circle;
 }

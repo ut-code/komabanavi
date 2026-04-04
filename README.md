@@ -21,3 +21,13 @@ npm run format
 # ビルド
 npm run build
 ```
+
+### デバッグ: 現在地を固定する
+
+環境変数 `VITE_DEBUG_POSITION` を設定すると、GPSの代わりに指定した座標に現在地マーカーを表示できます。
+
+```sh
+VITE_DEBUG_POSITION=1400,2000 npm run dev
+```
+
+座標は `[y, x]` の画像ピクセル座標です。マップの範囲内であれば任意の位置を指定できます。

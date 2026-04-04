@@ -36,7 +36,15 @@ export function MapPage() {
     L.imageOverlay(Komabamap, bounds).addTo(map);
     map.fitBounds(bounds);
     mapRef.current = map;
-    const geo = setupGeolocation(map, imgWidth, imgHeight);
+
+    // デバッグ用: 環境変数で現在地を固定座標に設定可能
+    // 例: VITE_DEBUG_POSITION=1400,2000
+    const debugPos = import.meta.env.VITE_DEBUG_POSITION;
+    const geoOptions = debugPos
+      ? { debugPosition: debugPos.split(",").map(Number) as [number, number] }
+      : undefined;
+
+    const geo = setupGeolocation(map, imgWidth, imgHeight, geoOptions);
     const wsMarkers = setupWaterServerMarkers(map);
     wsMarkersRef.current = wsMarkers.markers;
     const vmMarkers = setupVendingMachineMarkers(map);
