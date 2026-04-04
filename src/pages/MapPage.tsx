@@ -372,6 +372,29 @@ export function MapPage() {
                 </a>
               </div>
 
+              {/* フィードバックリンクセクション */}
+              <div className="sidebar-section sidebar-section--help">
+                <a
+                  href="https://forms.gle/FYZ5utc5Tfmnfe6CA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sidebar-help-link"
+                >
+                  <svg
+                    className="w-5 h-5 text-gray-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                  <span>フィードバックを送る</span>
+                </a>
+              </div>
+
               {/* UTCodeリンクセクション */}
               <div className="sidebar-section sidebar-section--github">
                 <a
