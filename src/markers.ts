@@ -399,4 +399,129 @@ export function setupBuildingPolygons(map: L.Map) {
   )
     .addTo(map)
     .bindPopup(createBuildingPopup("comipla_north", "コミプラ北館"));
+
+  // 第二体育館 (Second Gymnasium)
+  L.polygon(
+    [
+      [1478, 2602],
+      [1482, 2770],
+      [1780, 2774],
+      [1774, 2600],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("second_gymnasium", "第二体育館"));
+
+  // 第一体育館 (First Gymnasium)
+  L.polygon(
+    [
+      [1798, 2924],
+      [1632, 2922],
+      [1632, 3052],
+      [1804, 3054],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("first_gymnasium", "第一体育館"));
+
+  // キャンパスプラザA棟 (Campus Plaza A)
+  L.polygon(
+    [
+      [1556, 2784],
+      [1458, 2794],
+      [1444, 2858],
+      [1558, 2858],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("campus_plaza_a", "キャンパスプラザA棟"));
+
+  // キャンパスプラザB棟 (Campus Plaza B)
+  L.polygon(
+    [
+      [1452, 2908],
+      [1446, 2978],
+      [1564, 2978],
+      [1558, 2908],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("campus_plaza_b", "キャンパスプラザB棟"));
+
+  // 駒場博物館 (Komaba Museum)
+  L.polygon(
+    [
+      [878, 2242],
+      [754, 2241],
+      [760, 2430],
+      [880, 2431],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("komaba_museum", "駒場博物館"));
+
+  // アドバンスト・リサーチ・ラボラトリー (Advanced Research Laboratory)
+  L.polygon(
+    [
+      [1825, 1682],
+      [1890, 1678],
+      [1897, 1536],
+      [1826, 1540],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(
+      createBuildingPopup(
+        "advanced_research_lab",
+        "アドバンスト・リサーチ・ラボラトリー",
+      ),
+    );
+
+  // 駒場国際教育研究棟 (Komaba International Education & Research Building)
+  L.polygon(
+    [
+      [1449, 1096],
+      [1355, 1101],
+      [1357, 1399],
+      [1444, 1401],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(
+      createBuildingPopup("komaba_international_edu", "駒場国際教育研究棟"),
+    );
+
+  // 駒場保健センター (Komaba Health Center)
+  L.polygon(
+    [
+      [575, 1484],
+      [524, 1484],
+      [524, 1593],
+      [577, 1591],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("komaba_health_center", "駒場保健センター"));
+
+  // 生協食堂 (Co-op Cafeteria)
+  L.polygon(
+    [
+      [1250, 2495],
+      [1013, 2498],
+      [1017, 2637],
+      [1086, 2660],
+      [1250, 2665],
+    ],
+    { color: "transparent", fillOpacity: 0 },
+  )
+    .addTo(map)
+    .bindPopup(createBuildingPopup("coop_cafeteria", "生協食堂"));
 }

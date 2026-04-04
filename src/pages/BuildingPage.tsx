@@ -153,6 +153,51 @@ const buildings: Record<string, BuildingInfo> = {
     // image: im.Library,
     description: "Library - Study facilities and resources",
   },
+  second_gymnasium: {
+    id: "second_gymnasium",
+    name: "第二体育館",
+    description: "Second Gymnasium - Sports and athletic facilities",
+  },
+  first_gymnasium: {
+    id: "first_gymnasium",
+    name: "第一体育館",
+    description: "First Gymnasium - Sports and athletic facilities",
+  },
+  campus_plaza_a: {
+    id: "campus_plaza_a",
+    name: "キャンパスプラザA棟",
+    description: "Campus Plaza Building A - General facilities",
+  },
+  campus_plaza_b: {
+    id: "campus_plaza_b",
+    name: "キャンパスプラザB棟",
+    description: "Campus Plaza Building B - General facilities",
+  },
+  komaba_museum: {
+    id: "komaba_museum",
+    name: "駒場博物館",
+    description: "Komaba Museum - Museum and exhibition facilities",
+  },
+  advanced_research_lab: {
+    id: "advanced_research_lab",
+    name: "アドバンスト・リサーチ・ラボラトリー",
+    description: "Advanced Research Laboratory - Research facilities",
+  },
+  komaba_international_edu: {
+    id: "komaba_international_edu",
+    name: "駒場国際教育研究棟",
+    description: "Komaba International Education & Research Building",
+  },
+  komaba_health_center: {
+    id: "komaba_health_center",
+    name: "駒場保健センター",
+    description: "Komaba Health Center - Health and medical services",
+  },
+  coop_cafeteria: {
+    id: "coop_cafeteria",
+    name: "生協食堂",
+    description: "Co-op Cafeteria - Dining facilities",
+  },
 };
 
 export function BuildingPage() {
