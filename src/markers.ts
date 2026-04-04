@@ -80,13 +80,20 @@ const buttonHoverStyle = `
 `;
 
 export function setupBuildingPolygons(map: L.Map) {
-  const createBuildingPopup = (buildingId: string, name: string) => {
+  const createBuildingPopup = (
+    buildingId: string,
+    name: string,
+    showButton: boolean = true,
+  ) => {
+    const buttonHtml = showButton
+      ? `<a href="/building/${buildingId}" style="${buttonStyle}" onmouseover="this.style.backgroundColor='#2563eb'" onmouseout="this.style.backgroundColor='#3b82f6'">
+        詳細
+      </a>`
+      : "";
     return `
     <div style="text-align: center; padding: 8px;">
-      <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 16px;">${name}</p>
-      <a href="/building/${buildingId}" style="${buttonStyle}" onmouseover="this.style.backgroundColor='#2563eb'" onmouseout="this.style.backgroundColor='#3b82f6'">
-        詳細
-      </a>
+      <p style="margin: 0 0 ${showButton ? "8px" : "0"} 0; font-weight: bold; font-size: 16px;">${name}</p>
+      ${buttonHtml}
     </div>
     `;
   };
@@ -128,7 +135,7 @@ export function setupBuildingPolygons(map: L.Map) {
     { color: "transparent", fillOpacity: 0 },
   )
     .addTo(map)
-    .bindPopup(createBuildingPopup("building101", "101号館"));
+    .bindPopup(createBuildingPopup("building101", "101号館", false));
 
   L.polygon(
     [
@@ -140,7 +147,7 @@ export function setupBuildingPolygons(map: L.Map) {
     { color: "transparent", fillOpacity: 0 },
   )
     .addTo(map)
-    .bindPopup(createBuildingPopup("building2", "2号館"));
+    .bindPopup(createBuildingPopup("building2", "2号館", false));
 
   L.polygon(
     [
@@ -188,7 +195,7 @@ export function setupBuildingPolygons(map: L.Map) {
     { color: "transparent", fillOpacity: 0 },
   )
     .addTo(map)
-    .bindPopup(createBuildingPopup("building9", "9号館"));
+    .bindPopup(createBuildingPopup("building9", "9号館", false));
 
   L.polygon(
     [
@@ -250,7 +257,7 @@ export function setupBuildingPolygons(map: L.Map) {
     { color: "transparent", fillOpacity: 0 },
   )
     .addTo(map)
-    .bindPopup(createBuildingPopup("building14", "14号館"));
+    .bindPopup(createBuildingPopup("building14", "14号館", false));
 
   L.polygon(
     [
@@ -316,7 +323,7 @@ export function setupBuildingPolygons(map: L.Map) {
     { color: "transparent", fillOpacity: 0 },
   )
     .addTo(map)
-    .bindPopup(createBuildingPopup("building19", "19号館"));
+    .bindPopup(createBuildingPopup("building19", "19号館", false));
 
   L.polygon(
     [
@@ -480,6 +487,7 @@ export function setupBuildingPolygons(map: L.Map) {
       createBuildingPopup(
         "advanced_research_lab",
         "アドバンスト・リサーチ・ラボラトリー",
+        false,
       ),
     );
 
