@@ -337,9 +337,11 @@ export function setupGeolocation(
   imgHeight: number,
 ) {
   let userMarker: L.Marker | null = null;
+  let watchId: number | null = null;
+  let hasAlerted = false;
 
   // Get location information
-  navigator.geolocation.getCurrentPosition(
+  watchId = navigator.geolocation.watchPosition(
     (position: GeolocationPosition) => {
       const userLat: number = position.coords.latitude;
       const userLng: number = position.coords.longitude;
@@ -348,7 +350,10 @@ export function setupGeolocation(
       // Convert latitude/longitude to image coordinates
       if (!convertLatLngToImageXY) {
         console.error("Coordinate transformer is not available");
-        alert("座標変換システムの初期化に失敗しました。");
+        if (!hasAlerted) {
+          alert("座標変換システムの初期化に失敗しました。");
+          hasAlerted = true;
+        }
         return;
       }
 
@@ -356,7 +361,10 @@ export function setupGeolocation(
 
       if (!imageXY || !Array.isArray(imageXY) || imageXY.length < 2) {
         console.error("Failed to convert coordinates");
-        alert("座標変換に失敗しました。");
+        if (!hasAlerted) {
+          alert("座標変換に失敗しました。");
+          hasAlerted = true;
+        }
         return;
       }
 
@@ -375,7 +383,10 @@ export function setupGeolocation(
           lng: userLng,
           imageXY: { x: imgX, y: imgY },
         });
-        alert("現在地がマップの範囲外です。");
+        if (!hasAlerted) {
+          alert("現在地がマップの範囲外です。");
+          hasAlerted = true;
+        }
         return;
       }
 
@@ -391,10 +402,11 @@ export function setupGeolocation(
         .openPopup();
 
       // Show error warning only when inside map bounds and error is large
-      if (accuracy > ERROR_THRESHOLD_METERS) {
+      if (accuracy > ERROR_THRESHOLD_METERS && !hasAlerted) {
         alert(
           `現在地は正確ではない可能性があります（誤差：約${Math.round(accuracy)}m）`,
         );
+        hasAlerted = true;
       }
 
       // Log the obtained values
@@ -408,8 +420,9 @@ export function setupGeolocation(
     (error: GeolocationPositionError) => {
       console.error("Failed to get location information", error);
       // ユーザーが位置情報の共有を拒否した場合（PERMISSION_DENIED）はアラートを表示しない
-      if (error.code !== error.PERMISSION_DENIED) {
+      if (error.code !== error.PERMISSION_DENIED && !hasAlerted) {
         alert("位置情報の取得に失敗しました。");
+        hasAlerted = true;
       }
     },
     {
@@ -418,4 +431,12 @@ export function setupGeolocation(
       timeout: 10_000,
     },
   );
+
+  return {
+    cleanup: () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    },
+  };
 }

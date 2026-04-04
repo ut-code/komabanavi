@@ -36,17 +36,14 @@ export function MapPage() {
     L.imageOverlay(Komabamap, bounds).addTo(map);
     map.fitBounds(bounds);
     mapRef.current = map;
-    // Only run geolocation setup once per session to avoid repeated alerts
-    if (!sessionStorage.getItem("geolocation-setup")) {
-      setupGeolocation(map, imgWidth, imgHeight);
-      sessionStorage.setItem("geolocation-setup", "1");
-    }
+    const geo = setupGeolocation(map, imgWidth, imgHeight);
     const wsMarkers = setupWaterServerMarkers(map);
     wsMarkersRef.current = wsMarkers.markers;
     const vmMarkers = setupVendingMachineMarkers(map);
     vmMarkersRef.current = vmMarkers.markers;
     setupBuildingPolygons(map);
     return () => {
+      geo.cleanup();
       map.remove();
       mapRef.current = null;
     };
