@@ -6,6 +6,7 @@ interface BuildingInfo {
   name: string;
   image?: string; // SVG未定義も許容
   description: string;
+  url?: string;
 }
 
 const buildings: Record<string, BuildingInfo> = {
@@ -122,24 +123,28 @@ const buildings: Record<string, BuildingInfo> = {
     name: "21KOMCEE West",
     image: im.KOMCEEWest,
     description: "21KOMCEE West - Student housing and facilities",
+    url: "https://www.c.u-tokyo.ac.jp/campuslife/facilities/21komcee/index.html",
   },
   komcee_east: {
     id: "komcee_east",
     name: "21KOMCEE East",
     image: im.KOMCEEEast,
     description: "21KOMCEE East - Student housing and facilities",
+    url: "https://www.c.u-tokyo.ac.jp/campuslife/facilities/21komcee/index.html",
   },
   info_edu: {
     id: "info_edu",
     name: "情報教育棟",
     image: im.InfoEduBuild,
     description: "Information and Education Building - Computer labs",
+    url: "https://www.c.u-tokyo.ac.jp/",
   },
   administration: {
     id: "administration",
     name: "アドミニストレーション棟",
     image: im.AdministrationOffice,
     description: "Administration Building - University offices",
+    url: "https://www.u-tokyo.ac.jp/",
   },
   comipla_north: {
     id: "comipla_north",
@@ -152,31 +157,37 @@ const buildings: Record<string, BuildingInfo> = {
     name: "図書館",
     // image: im.Library,
     description: "Library - Study facilities and resources",
+    url: "https://www.lib.u-tokyo.ac.jp/ja/library/komaba",
   },
   second_gymnasium: {
     id: "second_gymnasium",
     name: "第二体育館",
     description: "Second Gymnasium - Sports and athletic facilities",
+    url: "https://www.c.u-tokyo.ac.jp/campuslife/facilities/athletics/index.html",
   },
   first_gymnasium: {
     id: "first_gymnasium",
     name: "第一体育館",
     description: "First Gymnasium - Sports and athletic facilities",
+    url: "https://www.c.u-tokyo.ac.jp/campuslife/facilities/athletics/index.html",
   },
   campus_plaza_a: {
     id: "campus_plaza_a",
     name: "キャンパスプラザA棟",
     description: "Campus Plaza Building A - General facilities",
+    url: "https://www.gkuc.net/",
   },
   campus_plaza_b: {
     id: "campus_plaza_b",
     name: "キャンパスプラザB棟",
     description: "Campus Plaza Building B - General facilities",
+    url: "https://www.gkuc.net/",
   },
   komaba_museum: {
     id: "komaba_museum",
     name: "駒場博物館",
     description: "Komaba Museum - Museum and exhibition facilities",
+    url: "https://museum.c.u-tokyo.ac.jp/",
   },
   advanced_research_lab: {
     id: "advanced_research_lab",
@@ -187,16 +198,19 @@ const buildings: Record<string, BuildingInfo> = {
     id: "komaba_international_edu",
     name: "駒場国際教育研究棟",
     description: "Komaba International Education & Research Building",
+    url: "https://www.c.u-tokyo.ac.jp/",
   },
   komaba_health_center: {
     id: "komaba_health_center",
     name: "駒場保健センター",
     description: "Komaba Health Center - Health and medical services",
+    url: "https://www.c.u-tokyo.ac.jp/campuslife/facilities/healthcenter/index.html",
   },
   coop_cafeteria: {
     id: "coop_cafeteria",
     name: "生協食堂",
     description: "Co-op Cafeteria - Dining facilities",
+    url: "https://www.utcoop.or.jp/shop/komaba/",
   },
 };
 
@@ -234,6 +248,25 @@ export function BuildingPage() {
           <div className="p-8">
             <h1 className="text-4xl font-bold mb-2">{building.name}</h1>
             <p className="text-gray-600 text-lg mb-6">{building.description}</p>
+            {building.url && (
+              <a
+                href={building.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                </svg>
+                関連サイトを開く
+              </a>
+            )}
           </div>
 
           <div className="px-8 pb-8">
