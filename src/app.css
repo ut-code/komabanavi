@@ -18,7 +18,7 @@ body,
   transform: translateX(0);
 }
 .sidebar-toggle-btn {
-  @apply fixed top-6 right-3 z-[2100] p-3 rounded-full bg-yellow-400 text-yellow-900 shadow-lg border font-bold hover:bg-yellow-300 transition duration-200;
+  @apply fixed top-2 right-2 z-[2100] p-2 rounded-lg bg-yellow-400 text-yellow-900 shadow-lg border font-bold hover:bg-yellow-300 transition duration-200;
 }
 
 /* サイドバーヘッダー */
@@ -97,4 +97,14 @@ body,
 .wsButton,
 .vmButton {
   display: none !important;
+}
+
+/* Leafletズームコントロールを上部に配置 */
+.leaflet-top.leaflet-left {
+  top: 8px !important;
+  left: 8px !important;
+}
+
+.leaflet-control-zoom {
+  margin: 0 !important;
 }

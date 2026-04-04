@@ -129,7 +129,7 @@ export function MapPage() {
       <div ref={containerRef} className="w-full h-full" />
 
       {/* 検索ボックス（常時表示） */}
-      <div className="fixed top-4 left-4 right-20 z-[2100] max-w-md">
+      <div className="fixed top-2 left-16 right-16 z-[2100] max-w-2xl mx-auto">
         <div className="search-input-wrapper bg-white rounded-lg shadow-lg">
           <svg
             className="search-icon w-4 h-4"
@@ -240,7 +240,7 @@ export function MapPage() {
         aria-label="メニューを開く"
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
