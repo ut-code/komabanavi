@@ -345,13 +345,6 @@ export function setupGeolocation(
       const userLng: number = position.coords.longitude;
       const accuracy = position.coords.accuracy;
 
-      // Show accuracy warning only when accuracy is poor
-      if (accuracy > ERROR_THRESHOLD_METERS) {
-        alert(
-          `現在地は正確ではない可能性があります（誤差：約${Math.round(accuracy)}m）`,
-        );
-      }
-
       // Convert latitude/longitude to image coordinates
       if (!convertLatLngToImageXY) {
         console.error("Coordinate transformer is not available");
@@ -396,6 +389,13 @@ export function setupGeolocation(
         .addTo(map)
         .bindPopup("Current Location")
         .openPopup();
+
+      // Show error warning only when inside map bounds and error is large
+      if (accuracy > ERROR_THRESHOLD_METERS) {
+        alert(
+          `現在地は正確ではない可能性があります（誤差：約${Math.round(accuracy)}m）`,
+        );
+      }
 
       // Log the obtained values
       console.log(
