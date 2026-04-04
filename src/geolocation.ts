@@ -407,7 +407,10 @@ export function setupGeolocation(
     },
     (error: GeolocationPositionError) => {
       console.error("Failed to get location information", error);
-      alert("位置情報の取得に失敗しました。");
+      // ユーザーが位置情報の共有を拒否した場合（PERMISSION_DENIED）はアラートを表示しない
+      if (error.code !== error.PERMISSION_DENIED) {
+        alert("位置情報の取得に失敗しました。");
+      }
     },
     {
       enableHighAccuracy: true,
