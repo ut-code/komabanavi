@@ -77,7 +77,11 @@ function createAffineTransformer(points: ReferencePoint[]) {
 // Create transformation function
 const convertLatLngToImageXY = createAffineTransformer(refPoints);
 
-export function setupGeolocation(map: L.Map) {
+export function setupGeolocation(
+  map: L.Map,
+  imgWidth: number,
+  imgHeight: number,
+) {
   // Get location information
   navigator.geolocation.getCurrentPosition(
     (position: GeolocationPosition) => {
@@ -86,6 +90,22 @@ export function setupGeolocation(map: L.Map) {
 
       // Convert latitude/longitude to image coordinates (return value is already in decimal)
       const imageXY = convertLatLngToImageXY(userLat, userLng);
+
+      // Check if the converted coordinates are within the map bounds
+      if (Array.isArray(imageXY)) {
+        const [imgY, imgX] = imageXY;
+
+        // Check if coordinates are outside the map bounds
+        if (imgX < 0 || imgX > imgWidth || imgY < 0 || imgY > imgHeight) {
+          console.warn("User location is outside the map bounds", {
+            lat: userLat,
+            lng: userLng,
+            imageXY: { x: imgX, y: imgY },
+          });
+          alert("現在地がマップの範囲外です。");
+          return;
+        }
+      }
 
       // Place marker
       L.marker(imageXY).addTo(map).bindPopup("Current Location").openPopup();

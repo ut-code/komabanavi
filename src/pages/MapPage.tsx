@@ -36,7 +36,7 @@ export function MapPage() {
     L.imageOverlay(Komabamap, bounds).addTo(map);
     map.fitBounds(bounds);
     mapRef.current = map;
-    setupGeolocation(map);
+    setupGeolocation(map, imgWidth, imgHeight);
     const wsMarkers = setupWaterServerMarkers(map);
     wsMarkersRef.current = wsMarkers.markers;
     const vmMarkers = setupVendingMachineMarkers(map);
