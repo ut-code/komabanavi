@@ -28,13 +28,13 @@ export function MapPage() {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const map = L.map(containerRef.current, { crs: L.CRS.Simple, minZoom: -2 });
+    const map = L.map(containerRef.current, { crs: L.CRS.Simple, minZoom: -3 });
     const bounds: L.LatLngBoundsExpression = [
       [0, 0],
       [imgHeight, imgWidth],
     ];
     L.imageOverlay(Komabamap, bounds).addTo(map);
-    map.fitBounds(bounds);
+    map.setView([imgHeight / 2, imgWidth / 2], -1);
     mapRef.current = map;
 
     // デバッグ用: 環境変数で現在地を固定座標に設定可能
