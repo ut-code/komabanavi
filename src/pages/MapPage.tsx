@@ -389,7 +389,7 @@ export function MapPage() {
               {/* GitHubリンクセクション */}
               <div className="sidebar-section sidebar-section--github">
                 <a
-                  href="https://github.com/tknkaa/komabanavi"
+                  href="https://github.com/ut-code/komabanavi"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="sidebar-github-link"
