@@ -90,9 +90,16 @@ export function setupBuildingPolygons(map: L.Map) {
         詳細
       </a>`
       : "";
+    const shareUrl = `${window.location.origin}/?building=${buildingId}`;
+    const shareButtonHtml = `
+      <button onclick="navigator.clipboard.writeText('${shareUrl}').then(()=>alert('URLをコピーしました！')).catch(()=>{})" style="${buttonStyle}">
+        共有
+      </button>
+    `;
     return `
     <div style="text-align: center; padding: 8px;">
-      <p style="margin: 0 0 ${showButton ? "8px" : "0"} 0; font-weight: bold; font-size: 16px;">${name}</p>
+      <p style="margin: 0 0 4px 0; font-weight: bold; font-size: 16px;">${name}</p>
+      ${shareButtonHtml}
       ${buttonHtml}
     </div>
     `;

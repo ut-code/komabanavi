@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
+import { useSearchParams } from "react-router-dom";
 import { Komabamap } from "../assets";
 import UtcFavicon from "../assets/utc-favicon.svg";
 import { setupGeolocation } from "../geolocation";
@@ -10,6 +11,7 @@ import {
   toggleMarkers,
 } from "../markers";
 import { searchItems, type SearchableItem } from "../search";
+import { getBuildingCenter } from "../buildings";
 
 const imgWidth = 4000;
 const imgHeight = 2800;
@@ -25,6 +27,8 @@ export function MapPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchableItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
+  const [searchParams] = useSearchParams();
+  const initialParamsProcessed = useRef(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -50,6 +54,48 @@ export function MapPage() {
     const vmMarkers = setupVendingMachineMarkers(map);
     vmMarkersRef.current = vmMarkers.markers;
     setupBuildingPolygons(map);
+
+    // Process URL parameters for sharing location
+    const buildingId = searchParams.get("building");
+    const lat = searchParams.get("lat");
+    const lng = searchParams.get("lng");
+    const zoom = searchParams.get("zoom");
+
+    if (buildingId) {
+      const center = getBuildingCenter(buildingId);
+      if (center) {
+        map.flyTo([center[0], center[1]], 0, { duration: 1.5 });
+
+        // Show popup with pin
+        const buildingItem = searchItems(buildingId).find(
+          (item) => item.buildingId === buildingId,
+        );
+        if (buildingItem && buildingItem.buildingId) {
+          const popupContent = `
+            <div style="text-align: center;">
+              <p style="margin: 0 0 8px 0; font-weight: bold;">${buildingItem.name}</p>
+              <a href="/building/${buildingItem.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">詳細</a>
+            </div>
+          `;
+          L.popup()
+            .setLatLng([center[0], center[1]])
+            .setContent(popupContent)
+            .openOn(map);
+        }
+      }
+    } else if (lat && lng) {
+      const position: [number, number] = [Number(lat), Number(lng)];
+      const zoomLevel = zoom ? Number(zoom) : 0;
+      map.flyTo(position, zoomLevel, { duration: 1.5 });
+
+      L.popup()
+        .setLatLng(position)
+        .setContent(`<b>共有された位置</b>`)
+        .openOn(map);
+    }
+
+    initialParamsProcessed.current = true;
+
     return () => {
       geo.cleanup();
       map.remove();
@@ -94,12 +140,17 @@ export function MapPage() {
 
       // If it's a building with a detail page, show a popup with link
       if (item.type === "building" && item.buildingId) {
+        const shareUrl = `${window.location.origin}/?building=${item.buildingId}`;
         L.popup()
           .setLatLng([item.lat, item.lng])
           .setContent(
             `
             <div style="text-align: center;">
               <p style="margin: 0 0 8px 0; font-weight: bold;">${item.name}</p>
+              <button onclick="navigator.clipboard.writeText('${shareUrl}').then(()=>alert('URLをコピーしました！')).catch(()=>{})" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; margin-bottom: 8px;">
+                共有
+              </button>
+              <br/>
               <a href="/building/${item.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">詳細</a>
             </div>
           `,
