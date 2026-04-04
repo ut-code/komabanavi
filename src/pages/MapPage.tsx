@@ -110,6 +110,9 @@ export function MapPage() {
           .openOn(mapRef.current);
       }
     }
+    // Reset search box to initial state
+    setSearchQuery("");
+    setSearchResults([]);
     // Close sidebar after selection
     setSidebarOpen(false);
   };
@@ -124,6 +127,111 @@ export function MapPage() {
     <div className="w-full h-screen relative">
       {/* Map背景 */}
       <div ref={containerRef} className="w-full h-full" />
+
+      {/* 検索ボックス（常時表示） */}
+      <div className="fixed top-4 left-4 right-20 z-[2100] max-w-md">
+        <div className="search-input-wrapper bg-white rounded-lg shadow-lg">
+          <svg
+            className="search-icon w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            className="sidebar-search-input"
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="建物・施設を検索"
+          />
+        </div>
+
+        {/* 検索結果表示 */}
+        {searchQuery && searchResults.length > 0 && (
+          <div className="search-results max-h-96 overflow-y-auto mt-2 shadow-lg">
+            {searchResults.map((item) => (
+              <button
+                key={item.id}
+                className="search-result-item w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm"
+                onClick={() => handleSelectItem(item)}
+              >
+                <div className="font-medium text-gray-800">{item.name}</div>
+                {item.description && (
+                  <div className="text-xs text-gray-500 mt-0.5">
+                    {item.description}
+                  </div>
+                )}
+                <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                  {item.type === "building" && (
+                    <>
+                      <svg
+                        className="w-3 h-3"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M3 21h18" />
+                        <path d="M5 21V7l8-4v18" />
+                        <path d="M19 21V11l-6-4" />
+                        <path d="M9 9h1" />
+                        <path d="M9 13h1" />
+                        <path d="M9 17h1" />
+                      </svg>
+                      建物
+                    </>
+                  )}
+                  {item.type === "waterServer" && (
+                    <>
+                      <svg
+                        className="w-3 h-3"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M12 2v6" />
+                        <path d="M8 8h8" />
+                        <path d="M7 8v8a5 5 0 0 0 10 0V8z" />
+                      </svg>
+                      ウォーターサーバー
+                    </>
+                  )}
+                  {item.type === "vendingMachine" && (
+                    <>
+                      <svg
+                        className="w-3 h-3"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <rect x="4" y="2" width="16" height="20" rx="2" />
+                        <line x1="4" y1="10" x2="20" y2="10" />
+                        <rect x="7" y="4" width="4" height="4" rx="0.5" />
+                        <rect x="13" y="4" width="4" height="4" rx="0.5" />
+                      </svg>
+                      自動販売機
+                    </>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* 検索結果が0件の場合 */}
+        {searchQuery && searchResults.length === 0 && (
+          <div className="bg-white rounded-lg shadow-lg text-center text-gray-500 text-sm py-3 mt-2">
+            該当する結果が見つかりませんでした
+          </div>
+        )}
+      </div>
 
       {/* サイドバーを開くメニューボタン */}
       <button
@@ -177,131 +285,6 @@ export function MapPage() {
 
             {/* コンテンツエリア */}
             <div className="sidebar-content">
-              {/* 検索セクション */}
-              <div className="sidebar-section">
-                <div className="search-input-wrapper">
-                  <svg
-                    className="search-icon w-4 h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  </svg>
-                  <input
-                    className="sidebar-search-input"
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    placeholder="建物・施設を検索"
-                  />
-                </div>
-
-                {/* 検索結果表示 */}
-                {searchQuery && searchResults.length > 0 && (
-                  <div className="search-results max-h-48 overflow-y-auto">
-                    {searchResults.map((item) => (
-                      <button
-                        key={item.id}
-                        className="search-result-item w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm"
-                        onClick={() => handleSelectItem(item)}
-                      >
-                        <div className="font-medium text-gray-800">
-                          {item.name}
-                        </div>
-                        {item.description && (
-                          <div className="text-xs text-gray-500 mt-0.5">
-                            {item.description}
-                          </div>
-                        )}
-                        <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
-                          {item.type === "building" && (
-                            <>
-                              <svg
-                                className="w-3 h-3"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <path d="M3 21h18" />
-                                <path d="M5 21V7l8-4v18" />
-                                <path d="M19 21V11l-6-4" />
-                                <path d="M9 9h1" />
-                                <path d="M9 13h1" />
-                                <path d="M9 17h1" />
-                              </svg>
-                              建物
-                            </>
-                          )}
-                          {item.type === "waterServer" && (
-                            <>
-                              <svg
-                                className="w-3 h-3"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <path d="M12 2v6" />
-                                <path d="M8 8h8" />
-                                <path d="M7 8v8a5 5 0 0 0 10 0V8z" />
-                              </svg>
-                              ウォーターサーバー
-                            </>
-                          )}
-                          {item.type === "vendingMachine" && (
-                            <>
-                              <svg
-                                className="w-3 h-3"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <rect
-                                  x="4"
-                                  y="2"
-                                  width="16"
-                                  height="20"
-                                  rx="2"
-                                />
-                                <line x1="4" y1="10" x2="20" y2="10" />
-                                <rect
-                                  x="7"
-                                  y="4"
-                                  width="4"
-                                  height="4"
-                                  rx="0.5"
-                                />
-                                <rect
-                                  x="13"
-                                  y="4"
-                                  width="4"
-                                  height="4"
-                                  rx="0.5"
-                                />
-                              </svg>
-                              自動販売機
-                            </>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* 検索結果が0件の場合 */}
-                {searchQuery && searchResults.length === 0 && (
-                  <div className="text-center text-gray-500 text-sm py-3">
-                    該当する結果が見つかりませんでした
-                  </div>
-                )}
-              </div>
-
               {/* 表示トグルセクション */}
               <div className="sidebar-section">
                 <button
