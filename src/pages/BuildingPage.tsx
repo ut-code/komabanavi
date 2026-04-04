@@ -144,7 +144,7 @@ const buildings: Record<string, BuildingInfo> = {
   comipla_north: {
     id: "comipla_north",
     name: "コミプラ北館",
-    image: im.KCPNorthBldg,
+    image: im.ComiplaNorthBuilding,
     description: "Comipla North Building - General facilities",
   },
   library: {

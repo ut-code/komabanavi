@@ -1,25 +1,25 @@
 import Komabamap from "./assets/Komabamap.svg";
 
-import Building1 from "./assets/buildings/Building1.avif";
-import Building5 from "./assets/buildings/Building5.avif";
-import Building7 from "./assets/buildings/Building7.avif";
-import Building8 from "./assets/buildings/Building8.avif";
-import Building10 from "./assets/buildings/Bldg10.avif";
-import Building11 from "./assets/buildings/Bldg11.avif";
-import Building12 from "./assets/buildings/Building12.avif";
-import Building13 from "./assets/buildings/Bldg13.avif";
-import Building15 from "./assets/buildings/Building15.avif";
-import Building16 from "./assets/buildings/Building16.avif";
-import Building17 from "./assets/buildings/Building17.avif";
-import Building18 from "./assets/buildings/Building18.avif";
-import Building900 from "./assets/buildings/LectureHall900.avif";
+import Building1 from "./assets/buildings/Building1.jpg";
+import Building5 from "./assets/buildings/Building5.jpg";
+import Building7 from "./assets/buildings/Building7.jpg";
+import Building8 from "./assets/buildings/Building8.jpg";
+import Building10 from "./assets/buildings/Building10.jpg";
+import Building11 from "./assets/buildings/Building11.jpg";
+import Building12 from "./assets/buildings/Building12.jpg";
+import Building13 from "./assets/buildings/Building13.jpg";
+import Building15 from "./assets/buildings/Building15.jpg";
+import Building16 from "./assets/buildings/Building16.jpg";
+import Building17 from "./assets/buildings/Building17.jpg";
+import Building18 from "./assets/buildings/Building18.jpg";
+import Building900 from "./assets/buildings/LectureHall900.jpg";
 
-import KOMCEEWest from "./assets/buildings/KOMCEE21West.avif";
-import KOMCEEEast from "./assets/buildings/KOMCEE21East.avif";
+import KOMCEEWest from "./assets/buildings/KOMCEE21West.jpg";
+import KOMCEEEast from "./assets/buildings/KOMCEE21East.jpg";
 
-import InfoEduBuild from "./assets/buildings/InfoEduBuild.avif";
-import AdministrationOffice from "./assets/buildings/AdministrationBuilding.avif";
-import KCPNorthBldg from "./assets/buildings/ComiplaNorthBuilding.avif";
+import InfoEduBuild from "./assets/buildings/InfoEduBuild.jpg";
+import AdministrationOffice from "./assets/buildings/AdministrationBuilding.jpg";
+import ComiplaNorthBuilding from "./assets/buildings/ComiplaNorthBuilding.jpg";
 
 import WaterServer from "./assets/WaterServer.svg";
 import VendingMachine from "./assets/VendingMachine.svg";
@@ -43,7 +43,7 @@ export {
   KOMCEEEast,
   InfoEduBuild,
   AdministrationOffice,
-  KCPNorthBldg,
+  ComiplaNorthBuilding,
   WaterServer,
   VendingMachine,
 };
