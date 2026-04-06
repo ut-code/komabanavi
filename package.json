@@ -30,8 +30,10 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "leaflet-smooth-zoom": "github:mutsuyuki/Leaflet.SmoothWheelZoom",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.14.0"
   }
 }
