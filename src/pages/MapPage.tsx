@@ -22,6 +22,7 @@ import {
 } from "../markers";
 import { searchItems, type SearchableItem } from "../search";
 import { getBuildingCenter } from "../buildings";
+import "leaflet-smooth-zoom/SmoothWheelZoom.js";
 
 const imgWidth = 4000;
 const imgHeight = 2800;
@@ -226,6 +227,11 @@ export function MapPage() {
         center={[imgHeight / 2, imgWidth / 2]}
         zoom={-1}
         className="w-full h-full"
+        scrollWheelZoom={false}
+        // @ts-expect-error https://github.com/mutsuyuki/Leaflet.SmoothWheelZoom プラグインで提供されるオプション
+        smoothWheelZoom={true}
+        smoothSensitivity={5}
+        zoomSnap={0}
       >
         <ImageOverlay url={Komabamap} bounds={bounds} />
         <MapController
