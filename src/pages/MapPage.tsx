@@ -1,65 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
+import {
+  MapContainer,
+  ImageOverlay,
+  Marker,
+  Popup,
+  Polygon,
+  Circle,
+  useMap,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import { useSearchParams } from "react-router-dom";
 import { Komabamap } from "../assets";
 import UtcFavicon from "../assets/utc-favicon.svg";
-import { setupGeolocation } from "../geolocation";
+import { useGeolocation } from "../geolocation";
 import {
-  setupBuildingPolygons,
-  setupWaterServerMarkers,
-  setupVendingMachineMarkers,
-  toggleMarkers,
+  buildingPolygons,
+  waterServerMarkers,
+  vendingMachineMarkers,
+  orangeIcon,
 } from "../markers";
 import { searchItems, type SearchableItem } from "../search";
 import { getBuildingCenter } from "../buildings";
 
 const imgWidth = 4000;
 const imgHeight = 2800;
+const bounds: L.LatLngBoundsExpression = [
+  [0, 0],
+  [imgHeight, imgWidth],
+];
 
-export function MapPage() {
-  const mapRef = useRef<L.Map | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const wsMarkersRef = useRef<L.Marker[]>([]);
-  const vmMarkersRef = useRef<L.Marker[]>([]);
-  const [wsMarkersVisible, setWsMarkersVisible] = useState(false);
-  const [vmMarkersVisible, setVmMarkersVisible] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchableItem[]>([]);
-  const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
-  const [searchParams] = useSearchParams();
-  const initialParamsProcessed = useRef(false);
+// Component to handle map interactions like flyTo
+function MapController({
+  selectedItem,
+  initialParams,
+}: {
+  selectedItem: SearchableItem | null;
+  initialParams: {
+    buildingId: string | null;
+    lat: string | null;
+    lng: string | null;
+    zoom: string | null;
+  };
+}) {
+  const map = useMap();
+  const initialProcessed = useRef(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const map = L.map(containerRef.current, { crs: L.CRS.Simple, minZoom: -3 });
-    const bounds: L.LatLngBoundsExpression = [
-      [0, 0],
-      [imgHeight, imgWidth],
-    ];
-    L.imageOverlay(Komabamap, bounds).addTo(map);
-    map.setView([imgHeight / 2, imgWidth / 2], -1);
-    mapRef.current = map;
+    if (initialProcessed.current) return;
 
-    // デバッグ用: 環境変数で現在地を固定座標に設定可能
-    // 例: VITE_DEBUG_POSITION=1400,2000
-    const debugPos = import.meta.env.VITE_DEBUG_POSITION;
-    const geoOptions = debugPos
-      ? { debugPosition: debugPos.split(",").map(Number) as [number, number] }
-      : undefined;
-
-    const geo = setupGeolocation(map, imgWidth, imgHeight, geoOptions);
-    const wsMarkers = setupWaterServerMarkers(map);
-    wsMarkersRef.current = wsMarkers.markers;
-    const vmMarkers = setupVendingMachineMarkers(map);
-    vmMarkersRef.current = vmMarkers.markers;
-    setupBuildingPolygons(map);
-
-    // Process URL parameters for sharing location
-    const buildingId = searchParams.get("building");
-    const lat = searchParams.get("lat");
-    const lng = searchParams.get("lng");
-    const zoom = searchParams.get("zoom");
+    const { buildingId, lat, lng, zoom } = initialParams;
 
     if (buildingId) {
       const center = getBuildingCenter(buildingId);
@@ -94,34 +84,120 @@ export function MapPage() {
         .openOn(map);
     }
 
-    initialParamsProcessed.current = true;
+    initialProcessed.current = true;
+  }, [map, initialParams]);
 
-    return () => {
-      geo.cleanup();
-      map.remove();
-      mapRef.current = null;
-    };
-  }, []);
+  useEffect(() => {
+    if (selectedItem) {
+      // Fly to the selected item's location
+      map.flyTo([selectedItem.lat, selectedItem.lng], 0, {
+        duration: 1.5,
+      });
 
-  const handleWsMarkerToggle = () => {
-    if (mapRef.current) {
-      const newVisible = toggleMarkers(
-        mapRef.current,
-        wsMarkersRef.current,
-        wsMarkersVisible,
-      );
-      setWsMarkersVisible(newVisible);
+      // If it's a building with a detail page, show a popup with link
+      if (selectedItem.type === "building" && selectedItem.buildingId) {
+        const shareUrl = `${window.location.origin}/?building=${selectedItem.buildingId}`;
+        L.popup()
+          .setLatLng([selectedItem.lat, selectedItem.lng])
+          .setContent(
+            `
+            <div style="text-align: center;">
+              <p style="margin: 0 0 8px 0; font-weight: bold;">${selectedItem.name}</p>
+              <button onclick="navigator.clipboard.writeText('${shareUrl}').then(()=>alert('URLをコピーしました！')).catch(()=>{})" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; margin-bottom: 8px;">
+                共有
+              </button>
+              <br/>
+              <a href="/building/${selectedItem.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">詳細</a>
+            </div>
+          `,
+          )
+          .openOn(map);
+      } else {
+        // Show popup for water servers and vending machines
+        L.popup()
+          .setLatLng([selectedItem.lat, selectedItem.lng])
+          .setContent(
+            `<b>${selectedItem.name}</b>${selectedItem.description ? `<br>${selectedItem.description}` : ""}`,
+          )
+          .openOn(map);
+      }
     }
-  };
-  const handleVmMarkerToggle = () => {
-    if (mapRef.current) {
-      const newVisible = toggleMarkers(
-        mapRef.current,
-        vmMarkersRef.current,
-        vmMarkersVisible,
-      );
-      setVmMarkersVisible(newVisible);
-    }
+  }, [selectedItem, map]);
+
+  return null;
+}
+
+function UserLocation() {
+  // デバッグ用: 環境変数で現在地を固定座標に設定可能
+  // 例: VITE_DEBUG_POSITION=1400,2000
+  const debugPos = useMemo(
+    () =>
+      import.meta.env.VITE_DEBUG_POSITION?.split(",").map(Number) as [
+        number,
+        number,
+      ],
+    [],
+  );
+
+  const geoOptions = debugPos ? { debugPosition: debugPos } : {};
+
+  const { position, accuracy } = useGeolocation(
+    imgWidth,
+    imgHeight,
+    geoOptions,
+  );
+
+  if (!position) return null;
+
+  const dotIcon = L.divIcon({
+    className: "user-location-dot",
+    html: `<div style="
+      width: 16px;
+      height: 16px;
+      background: #3b82f6;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(59,130,246,0.6);
+    "></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  });
+
+  return (
+    <>
+      <Marker position={position} icon={dotIcon} zIndexOffset={1000}>
+        <Popup>Current Location</Popup>
+      </Marker>
+      {/*精度円 (accuracy radius in meters, but since this is a custom CRS map, we use a visual radius in pixels)*/}
+      <Circle
+        center={position}
+        radius={Math.max(accuracy, 10)}
+        pathOptions={{
+          color: "#3b82f6",
+          fillColor: "#3b82f6",
+          fillOpacity: 0.2,
+          weight: 2,
+        }}
+      />
+    </>
+  );
+}
+
+export function MapPage() {
+  const [wsMarkersVisible, setWsMarkersVisible] = useState(false);
+  const [vmMarkersVisible, setVmMarkersVisible] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchableItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
+  const [searchParams] = useSearchParams();
+
+  // Process URL parameters for sharing location
+  const initialParams = {
+    buildingId: searchParams.get("building"),
+    lat: searchParams.get("lat"),
+    lng: searchParams.get("lng"),
+    zoom: searchParams.get("zoom"),
   };
 
   const handleSearch = (query: string) => {
@@ -132,48 +208,11 @@ export function MapPage() {
 
   const handleSelectItem = (item: SearchableItem) => {
     setSelectedItem(item);
-    if (mapRef.current) {
-      // Fly to the selected item's location
-      mapRef.current.flyTo([item.lat, item.lng], 0, {
-        duration: 1.5,
-      });
-
-      // If it's a building with a detail page, show a popup with link
-      if (item.type === "building" && item.buildingId) {
-        const shareUrl = `${window.location.origin}/?building=${item.buildingId}`;
-        L.popup()
-          .setLatLng([item.lat, item.lng])
-          .setContent(
-            `
-            <div style="text-align: center;">
-              <p style="margin: 0 0 8px 0; font-weight: bold;">${item.name}</p>
-              <button onclick="navigator.clipboard.writeText('${shareUrl}').then(()=>alert('URLをコピーしました！')).catch(()=>{})" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; margin-bottom: 8px;">
-                共有
-              </button>
-              <br/>
-              <a href="/building/${item.buildingId}" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 6px; text-decoration: none;">詳細</a>
-            </div>
-          `,
-          )
-          .openOn(mapRef.current);
-      } else {
-        // Show popup for water servers and vending machines
-        L.popup()
-          .setLatLng([item.lat, item.lng])
-          .setContent(
-            `<b>${item.name}</b>${item.description ? `<br>${item.description}` : ""}`,
-          )
-          .openOn(mapRef.current);
-      }
-    }
-    // Reset search box to initial state
     setSearchQuery("");
     setSearchResults([]);
-    // Close sidebar after selection
     setSidebarOpen(false);
   };
 
-  // サイドバー内部ボタンのラベルを状態依存で切替
   const wsLabel = wsMarkersVisible
     ? "ウォーターサーバーを非表示"
     : "ウォーターサーバーを表示";
@@ -181,8 +220,101 @@ export function MapPage() {
 
   return (
     <div className="w-full h-screen relative">
-      {/* Map背景 */}
-      <div ref={containerRef} className="w-full h-full" />
+      <MapContainer
+        crs={L.CRS.Simple}
+        minZoom={-3}
+        center={[imgHeight / 2, imgWidth / 2]}
+        zoom={-1}
+        className="w-full h-full"
+      >
+        <ImageOverlay url={Komabamap} bounds={bounds} />
+        <MapController
+          selectedItem={selectedItem}
+          initialParams={initialParams}
+        />
+        <UserLocation />
+
+        {buildingPolygons.map((poly) => (
+          <Polygon
+            key={poly.id}
+            positions={poly.positions}
+            pathOptions={{ color: "transparent", fillOpacity: 0 }}
+          >
+            <Popup>
+              <div style={{ textAlign: "center", padding: "8px" }}>
+                <p
+                  style={{
+                    margin: "0 0 4px 0",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                  }}
+                >
+                  {poly.name}
+                </p>
+                <button
+                  onClick={() => {
+                    const shareUrl = `${window.location.origin}/?building=${poly.id}`;
+                    navigator.clipboard
+                      .writeText(shareUrl)
+                      .then(() => alert("URLをコピーしました！"));
+                  }}
+                  style={{
+                    display: "inline-block",
+                    marginTop: "8px",
+                    padding: "8px 16px",
+                    backgroundColor: "#3b82f6",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    marginRight: "8px",
+                  }}
+                >
+                  共有
+                </button>
+                {poly.showDetailButton && (
+                  <a
+                    href={`/building/${poly.id}`}
+                    style={{
+                      display: "inline-block",
+                      marginTop: "8px",
+                      padding: "8px 16px",
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      borderRadius: "6px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      textDecoration: "none",
+                    }}
+                  >
+                    詳細
+                  </a>
+                )}
+              </div>
+            </Popup>
+          </Polygon>
+        ))}
+
+        {wsMarkersVisible &&
+          waterServerMarkers.map((marker, idx) => (
+            <Marker key={`ws-${idx}`} position={marker.position}>
+              {marker.popup && <Popup>{marker.popup}</Popup>}
+            </Marker>
+          ))}
+
+        {vmMarkersVisible &&
+          vendingMachineMarkers.map((marker, idx) => (
+            <Marker
+              key={`vm-${idx}`}
+              position={marker.position}
+              icon={orangeIcon}
+            >
+              {marker.popup && <Popup>{marker.popup}</Popup>}
+            </Marker>
+          ))}
+      </MapContainer>
 
       {/* 検索ボックス（常時表示） */}
       <div className="fixed top-2 left-16 right-16 z-[2100] max-w-2xl mx-auto">
@@ -345,7 +477,7 @@ export function MapPage() {
               <div className="sidebar-section">
                 <button
                   className="sidebar-feature-btn"
-                  onClick={handleWsMarkerToggle}
+                  onClick={() => setWsMarkersVisible(!wsMarkersVisible)}
                 >
                   {/* ウォーターサーバーSVGアイコン */}
                   <svg
@@ -367,7 +499,7 @@ export function MapPage() {
                 </button>
                 <button
                   className="sidebar-feature-btn"
-                  onClick={handleVmMarkerToggle}
+                  onClick={() => setVmMarkersVisible(!vmMarkersVisible)}
                 >
                   {/* 自動販売機SVGアイコン */}
                   <svg

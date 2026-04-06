@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import L from "leaflet";
 
 // Numeric tolerance for detecting singular matrices / collinear points
@@ -164,7 +165,7 @@ function solveNormalEquations(A: number[][], b: number[]): number[] | null {
 // Supports 4+ reference points for better accuracy
 function createPolynomialTransformer(
   points: ReferencePoint[],
-): ((lat: number, lng: number) => L.LatLngExpression | null) | null {
+): ((lat: number, lng: number) => L.LatLngTuple | null) | null {
   if (points.length < 4) {
     console.warn(
       "Less than 4 reference points. Falling back to affine transformation.",
@@ -211,7 +212,7 @@ function createPolynomialTransformer(
     return null;
   }
 
-  return (lat: number, lng: number): L.LatLngExpression | null => {
+  return (lat: number, lng: number): L.LatLngTuple | null => {
     const xCoeff0 = xCoeffs[0];
     const xCoeff1 = xCoeffs[1];
     const xCoeff2 = xCoeffs[2];
@@ -264,7 +265,7 @@ function createPolynomialTransformer(
 // Function to calculate affine transformation coefficients from 3 points
 function createAffineTransformer(
   points: ReferencePoint[],
-): ((lat: number, lng: number) => L.LatLngExpression | null) | null {
+): ((lat: number, lng: number) => L.LatLngTuple | null) | null {
   if (points.length < 3) {
     console.error("At least 3 reference points are required");
     return null;
@@ -321,7 +322,7 @@ function createAffineTransformer(
       p3.y * (p1.lat * p2.lng - p2.lat * p1.lng)) /
     det;
 
-  return (lat: number, lng: number): L.LatLngExpression => {
+  return (lat: number, lng: number): L.LatLngTuple => {
     const x = A * lat + B * lng + C;
     const y = D * lat + E * lng + F;
     return [y, x];
@@ -336,175 +337,104 @@ export interface GeolocationOptions {
   debugPosition?: [number, number];
 }
 
-export function setupGeolocation(
-  map: L.Map,
+export function useGeolocation(
   imgWidth: number,
   imgHeight: number,
-  options?: GeolocationOptions,
+  { debugPosition }: GeolocationOptions,
 ) {
-  let userMarker: L.Marker | null = null;
-  let userCircle: L.Circle | null = null;
-  let watchId: number | null = null;
-  let hasAlerted = false;
+  const [position, setPosition] = useState<[number, number] | null>(null);
+  const [accuracy, setAccuracy] = useState<number>(0);
 
-  // デバッグ用固定位置がある場合はそれを使用
-  if (options?.debugPosition) {
-    const [imgY, imgX] = options.debugPosition;
-    placeOrUpdateMarker(map, [imgY, imgX], 0, () => {
-      userMarker = null;
-      userCircle = null;
-    });
-    return {
-      cleanup: () => {},
-    };
-  }
+  useEffect(() => {
+    let hasAlerted = false;
 
-  // Get location information
-  watchId = navigator.geolocation.watchPosition(
-    (position: GeolocationPosition) => {
-      const userLat: number = position.coords.latitude;
-      const userLng: number = position.coords.longitude;
-      const accuracy = position.coords.accuracy;
+    // デバッグ用固定位置がある場合はそれを使用
+    if (debugPosition) {
+      setPosition(debugPosition);
+      setAccuracy(0);
+      return;
+    }
 
-      // Convert latitude/longitude to image coordinates
-      if (!convertLatLngToImageXY) {
-        console.error("Coordinate transformer is not available");
-        if (!hasAlerted) {
-          alert("座標変換システムの初期化に失敗しました。");
+    if (!navigator.geolocation) {
+      console.error("Geolocation is not supported");
+      return;
+    }
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position: GeolocationPosition) => {
+        const userLat: number = position.coords.latitude;
+        const userLng: number = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
+
+        // Convert latitude/longitude to image coordinates
+        if (!convertLatLngToImageXY) {
+          console.error("Coordinate transformer is not available");
+          if (!hasAlerted) {
+            alert("座標変換システムの初期化に失敗しました。");
+            hasAlerted = true;
+          }
+          return;
+        }
+
+        const imageXY = convertLatLngToImageXY(userLat, userLng);
+        if (!imageXY) {
+          console.error("Failed to convert coordinates");
+          if (!hasAlerted) {
+            alert("座標変換に失敗しました。");
+            hasAlerted = true;
+          }
+          return;
+        }
+
+        const imgY = imageXY[0];
+        const imgX = imageXY[1];
+
+        if (typeof imgY !== "number" || typeof imgX !== "number") {
+          console.error("Invalid coordinate values");
+          return;
+        }
+
+        // Check if coordinates are outside the map bounds
+        if (imgX < 0 || imgX > imgWidth || imgY < 0 || imgY > imgHeight) {
+          console.warn("User location is outside the map bounds", {
+            lat: userLat,
+            lng: userLng,
+            imageXY: { x: imgX, y: imgY },
+          });
+          if (!hasAlerted) {
+            alert("現在地がマップの範囲外です。");
+            hasAlerted = true;
+          }
+          return;
+        }
+
+        // Show error warning only when inside map bounds and error is large
+        if (accuracy > ERROR_THRESHOLD_METERS && !hasAlerted) {
+          alert(
+            `現在地は正確ではない可能性があります（誤差：約${Math.round(accuracy)}m）`,
+          );
           hasAlerted = true;
         }
-        return;
-      }
-
-      const imageXY = convertLatLngToImageXY(userLat, userLng);
-
-      if (!imageXY || !Array.isArray(imageXY) || imageXY.length < 2) {
-        console.error("Failed to convert coordinates");
-        if (!hasAlerted) {
-          alert("座標変換に失敗しました。");
-          hasAlerted = true;
-        }
-        return;
-      }
-
-      const imgY = imageXY[0];
-      const imgX = imageXY[1];
-
-      if (typeof imgY !== "number" || typeof imgX !== "number") {
-        console.error("Invalid coordinate values");
-        return;
-      }
-
-      // Check if coordinates are outside the map bounds
-      if (imgX < 0 || imgX > imgWidth || imgY < 0 || imgY > imgHeight) {
-        console.warn("User location is outside the map bounds", {
-          lat: userLat,
-          lng: userLng,
-          imageXY: { x: imgX, y: imgY },
-        });
-        if (!hasAlerted) {
-          alert("現在地がマップの範囲外です。");
-          hasAlerted = true;
-        }
-        return;
-      }
-
-      placeOrUpdateMarker(map, [imgY, imgX], accuracy, () => {
-        userMarker = null;
-        userCircle = null;
-      });
-
-      // Show error warning only when inside map bounds and error is large
-      if (accuracy > ERROR_THRESHOLD_METERS && !hasAlerted) {
-        alert(
-          `現在地は正確ではない可能性があります（誤差：約${Math.round(accuracy)}m）`,
+        // Log the obtained values
+        console.log(
+          "gps:",
+          { lat: userLat, lng: userLng, error_m: accuracy },
+          "imageXY:",
+          { y: Number(imgY.toFixed(2)), x: Number(imgX.toFixed(2)) },
         );
-        hasAlerted = true;
-      }
+      },
+      (err) => {
+        console.error("Failed to get location information", err);
+        if (err.code !== err.PERMISSION_DENIED && !hasAlerted) {
+          alert("位置情報の取得に失敗しました。");
+          hasAlerted = true;
+        }
+      },
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 },
+    );
 
-      // Log the obtained values
-      console.log(
-        "gps:",
-        { lat: userLat, lng: userLng, error_m: accuracy },
-        "imageXY:",
-        { y: Number(imgY.toFixed(2)), x: Number(imgX.toFixed(2)) },
-      );
-    },
-    (error: GeolocationPositionError) => {
-      console.error("Failed to get location information", error);
-      // ユーザーが位置情報の共有を拒否した場合（PERMISSION_DENIED）はアラートを表示しない
-      if (error.code !== error.PERMISSION_DENIED && !hasAlerted) {
-        alert("位置情報の取得に失敗しました。");
-        hasAlerted = true;
-      }
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 5_000,
-      timeout: 10_000,
-    },
-  );
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [debugPosition, imgWidth, imgHeight]);
 
-  return {
-    cleanup: () => {
-      if (watchId !== null) {
-        navigator.geolocation.clearWatch(watchId);
-      }
-    },
-  };
-}
-
-function placeOrUpdateMarker(
-  map: L.Map,
-  latlng: L.LatLngExpression,
-  accuracy: number,
-  onClear: () => void,
-) {
-  // Remove existing marker/circle
-  const existingMarker = (map as any)._userMarker as L.Marker | undefined;
-  const existingCircle = (map as any)._userCircle as L.Circle | undefined;
-  if (existingMarker) {
-    map.removeLayer(existingMarker);
-  }
-  if (existingCircle) {
-    map.removeLayer(existingCircle);
-  }
-
-  // 精度円 (accuracy radius in meters, but since this is a custom CRS map,
-  // we use a visual radius in pixels)
-  const radius = Math.max(accuracy, 10);
-  const circle = L.circle(latlng, {
-    radius,
-    color: "#3b82f6",
-    fillColor: "#3b82f6",
-    fillOpacity: 0.2,
-    weight: 2,
-  }).addTo(map);
-
-  // 中心点のマーカー（小さなドット）
-  const dotIcon = L.divIcon({
-    className: "user-location-dot",
-    html: `<div style="
-      width: 16px;
-      height: 16px;
-      background: #3b82f6;
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(59,130,246,0.6);
-    "></div>`,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
-  });
-
-  const marker = L.marker(latlng, {
-    icon: dotIcon,
-    zIndexOffset: 1000,
-  })
-    .addTo(map)
-    .bindPopup("Current Location")
-    .openPopup();
-
-  // Store references on map for cleanup
-  (map as any)._userMarker = marker;
-  (map as any)._userCircle = circle;
+  return { position, accuracy };
 }
