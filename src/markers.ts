@@ -6,22 +6,22 @@ export interface MarkerData {
 }
 
 export const waterServerMarkers: MarkerData[] = [
-  { position: [1560, 1560], popup: "Komaba Library 1F" },
-  { position: [1351, 2680], popup: "Comipla 1F" },
-  { position: [1351, 2650], popup: "Comipla 2F" },
-  { position: [1494, 2823], popup: "Campus Plaza A Building 1F" },
-  { position: [1529, 2688], popup: "2nd Gymnasium 1F" },
-  { position: [1567, 2689], popup: "2nd Gymnasium 2F" },
-  { position: [1668, 2991], popup: "1st Gymnasium 2F" },
-  { position: [1390, 2065], popup: "Building 8 1F" },
+  { position: [1560, 1560], popup: "駒場図書館 1F" },
+  { position: [1351, 2680], popup: "コミプラ 1F" },
+  { position: [1351, 2650], popup: "コミプラ 2F" },
+  { position: [1494, 2823], popup: "キャンパスプラザA棟 1F" },
+  { position: [1529, 2688], popup: "第2体育館 1F" },
+  { position: [1567, 2689], popup: "第2体育館 2F" },
+  { position: [1668, 2991], popup: "第1体育館 2F" },
+  { position: [1390, 2065], popup: "8号館 1F" },
   { position: [1645, 2200], popup: "21 KOMCEE West B1F" },
-  { position: [1026, 2812], popup: "Building 5 1F" },
-  { position: [1160, 1318], popup: "Building 13 1F" },
-  { position: [1500, 860], popup: "Building 15 1F" },
-  { position: [1340, 2788], popup: "Co-op Purchasing Department" },
+  { position: [1026, 2812], popup: "5号館 1F" },
+  { position: [1160, 1318], popup: "13号館 1F" },
+  { position: [1500, 860], popup: "15号館 1F" },
+  { position: [1340, 2788], popup: "購買部" },
   {
     position: [505, 2826],
-    popup: "Mathematical Science Research Building 1F",
+    popup: "数理科学研究科棟 1F",
   },
 ];
 

@@ -168,7 +168,7 @@ function UserLocation() {
   return (
     <>
       <Marker position={position} icon={dotIcon} zIndexOffset={1000}>
-        <Popup>Current Location</Popup>
+        <Popup>現在地</Popup>
       </Marker>
       {/*精度円 (accuracy radius in meters, but since this is a custom CRS map, we use a visual radius in pixels)*/}
       <Circle
