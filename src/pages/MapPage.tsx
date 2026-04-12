@@ -17,6 +17,7 @@ import { useGeolocation } from "../geolocation";
 import {
   buildingPolygons,
   waterServerMarkers,
+  waterServerIcon,
   vendingMachineMarkers,
   orangeIcon,
 } from "../markers";
@@ -303,7 +304,11 @@ export function MapPage() {
 
         {wsMarkersVisible &&
           waterServerMarkers.map((marker, idx) => (
-            <Marker key={`ws-${idx}`} position={marker.position}>
+            <Marker
+              key={`ws-${idx}`}
+              position={marker.position}
+              icon={waterServerIcon}
+            >
               {marker.popup && <Popup>{marker.popup}</Popup>}
             </Marker>
           ))}
