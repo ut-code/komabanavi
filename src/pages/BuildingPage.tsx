@@ -273,10 +273,7 @@ export function BuildingPage() {
             <h2 className="text-2xl font-bold mb-4">階層図</h2>
           </div>
 
-          <div
-            className="bg-gray-200 overflow-auto"
-            style={{ maxHeight: "600px" }}
-          >
+          <div className="bg-gray-200">
             {building.image ? (
               <img
                 src={building.image}
