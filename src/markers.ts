@@ -1,5 +1,4 @@
 import L from "leaflet";
-import { WaterServer } from "./assets";
 
 export interface MarkerData {
   position: [number, number];
@@ -34,10 +33,10 @@ export const orangeIcon = L.icon({
 });
 
 export const waterServerIcon = L.icon({
-  iconUrl: WaterServer,
-  iconSize: [28, 28],
-  iconAnchor: [14, 28],
-  popupAnchor: [0, -28],
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+  iconSize: [25, 41],
+  iconAnchor: [12.5, 41],
 });
 
 export const vendingMachineMarkers: MarkerData[] = [
