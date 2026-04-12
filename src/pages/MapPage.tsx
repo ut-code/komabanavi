@@ -214,9 +214,7 @@ export function MapPage() {
     setSidebarOpen(false);
   };
 
-  const wsLabel = wsMarkersVisible
-    ? "ウォーターサーバーを非表示"
-    : "ウォーターサーバーを表示";
+  const wsLabel = wsMarkersVisible ? "給水機を非表示" : "給水機を表示";
   const vmLabel = vmMarkersVisible ? "自動販売機を非表示" : "自動販売機を表示";
 
   return (
