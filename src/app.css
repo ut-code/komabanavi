@@ -108,3 +108,68 @@ body,
 .leaflet-control-zoom {
   margin: 0 !important;
 }
+
+/* --- レーティングポップアップ --- */
+.rating-popup-overlay {
+  @apply fixed inset-0 z-[3000] flex items-center justify-center bg-black/40;
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rating-popup {
+  @apply bg-white rounded-2xl shadow-2xl p-6 mx-4 w-full max-w-sm text-center;
+  animation: pop-in 0.2s ease-out;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.rating-popup-title {
+  @apply text-lg font-bold text-gray-800 mb-4;
+}
+
+.rating-popup-stars {
+  @apply flex items-center justify-center gap-2 mb-5;
+}
+
+.rating-popup-star {
+  @apply text-4xl text-gray-300 transition-all duration-150 hover:scale-110 focus:outline-none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.rating-popup-star.selected {
+  @apply text-yellow-400;
+  filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.5));
+}
+
+.rating-popup-cancel {
+  @apply w-full py-2.5 px-4 bg-gray-100 text-gray-500 rounded-lg text-sm
+    hover:bg-gray-200 transition-colors;
+}
+
+.rating-popup-thankyou {
+  @apply py-6;
+}
+
+.rating-popup-thankyou-text {
+  @apply text-xl font-bold text-green-600;
+}

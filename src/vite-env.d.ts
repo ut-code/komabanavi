@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_DEBUG_POSITION?: string;
+  readonly VITE_CONVEX_URL: string;
 }
 
 interface ImportMeta {

@@ -29,6 +29,7 @@
     "vite": "^8.0.3"
   },
   "dependencies": {
+    "convex": "^1.35.1",
     "leaflet": "^1.9.4",
     "leaflet-smooth-zoom": "github:mutsuyuki/Leaflet.SmoothWheelZoom",
     "react": "^19.2.4",

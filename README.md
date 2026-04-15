@@ -10,10 +10,15 @@ cd komabanavi
 npm install
 ```
 
+.env.local に Convex の URL 貼る
+
 ## 開発環境
 
 ```sh
 npm run dev # http://localhost:8080 でプレビュー
+
+# 別ターミナルで
+npx convex dev
 
 # フォーマット
 npm run format

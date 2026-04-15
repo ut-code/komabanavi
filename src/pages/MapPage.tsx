@@ -24,6 +24,7 @@ import {
 import { searchItems, type SearchableItem } from "../search";
 import { getBuildingCenter } from "../buildings";
 import "leaflet-smooth-zoom/SmoothWheelZoom.js";
+import { RatingPopup } from "../components/RatingPopup";
 
 const imgWidth = 4000;
 const imgHeight = 2800;
@@ -193,6 +194,18 @@ export function MapPage() {
   const [searchResults, setSearchResults] = useState<SearchableItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
   const [searchParams] = useSearchParams();
+  const [showRatingPopup, setShowRatingPopup] = useState(false);
+
+  // Show rating popup once on first visit
+  useEffect(() => {
+    const hasRated = localStorage.getItem("komabanavi_rated");
+    if (!hasRated) {
+      const timer = setTimeout(() => {
+        setShowRatingPopup(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Process URL parameters for sharing location
   const initialParams = {
@@ -639,6 +652,11 @@ export function MapPage() {
             </div>
           </aside>
         </>
+      )}
+
+      {/* レーティングポップアップ */}
+      {showRatingPopup && (
+        <RatingPopup onDismiss={() => setShowRatingPopup(false)} />
       )}
     </div>
   );
